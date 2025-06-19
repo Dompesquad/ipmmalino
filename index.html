@@ -2,35 +2,50 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Database Kader IPM Cabang Malino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DATABASE Kader Ikatan Pelajar Muhammadiyah Cabang Malino</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
   <div class="container">
-    <img src="logo-ipmv2.jpeg" class="background-logo" alt="IPM Logo" />
-    <h1>Database Kader IPM Cabang Malino</h1>
+    <img src="logo-ipmv2.jpeg" alt="Logo IPM" class="logo" />
+    <h2>Form Pendaftaran Kader IPM</h2>
     <form id="kaderForm">
-      <input type="text" placeholder="Nama Lengkap" id="nama" required />
-      <input type="number" placeholder="Angkatan" id="angkatan" required />
-      <input type="text" placeholder="Tahun PKTM 1" id="pktm1" required />
-      <input type="text" placeholder="Tahun PKTM 2 (Opsional)" id="pktm2" />
-      <input type="text" placeholder="Tingkat Lanjutan (Opsional)" id="lanjutan1" />
-      <input type="text" placeholder="Tingkat Lanjutan 2 (Opsional)" id="lanjutan2" />
-      <input type="text" placeholder="Jabatan terakhir di cabang (Opsional)" id="jabatan" />
-      <input type="text" placeholder="Tahun menjabat (Opsional)" id="tahunJabat" />
-      <input type="text" placeholder="No. HP/WA" id="wa" required />
-      <input type="text" placeholder="Alamat" id="alamat" required />
-      <label for="foto">Upload Foto (Opsional)</label>
+      <label>Nama Lengkap <span class="wajib">*</span></label>
+      <input type="text" id="nama" required />
+
+      <label>Angkatan Ke- <span class="wajib">*</span></label>
+      <input type="number" id="angkatan" required />
+
+      <label>Tahun PKTM 1 <span class="wajib">*</span></label>
+      <input type="text" id="tahunPKTM1" required />
+
+      <label>Tahun PKTM 2</label>
+      <input type="text" id="tahunPKTM2" />
+
+      <label>Tahun Program Lanjutan</label>
+      <input type="text" id="programLanjutan" />
+
+      <label>Pimpinan Cabang Tahun</label>
+      <input type="text" id="pimpinanCabang" />
+
+      <label>Nomor WhatsApp</label>
+      <input type="text" id="nohp" />
+
+      <label>Upload Foto</label>
       <input type="file" id="foto" accept="image/*" />
+
+      <label>Alamat <span class="wajib">*</span></label>
+      <input type="text" id="alamat" required />
+
       <button type="submit">Kirim</button>
-      <p id="status" style="color:green; font-weight:bold;"></p>
     </form>
+    <p id="notif" style="color: green; margin-top: 10px;"></p>
     <p class="credit">Credit by Ruang Pena</p>
   </div>
-  <script src="app.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>
