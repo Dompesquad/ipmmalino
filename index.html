@@ -4,23 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form Data Kader IPM</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 bg-yellow-50">
+<body class="min-h-screen flex items-center justify-center p-4">
 
   <div class="bg-white rounded-xl shadow-xl w-full max-w-xl">
+
+    <!-- Header dengan Logo dan Judul -->
     <div class="text-center border-b border-gray-300 pb-4 pt-4">
       <img src="logo-ipm.jpeg" alt="Logo IPM" class="mx-auto h-20 mb-2" />
       <h1 class="text-2xl font-bold text-yellow-700">Form Database Kader IPM</h1>
       <p class="text-sm text-gray-600">Menghimpun Data Kader dari Angkatan 1 sampai 68</p>
     </div>
 
+    <!-- Form Input -->
     <form id="kaderForm" class="space-y-4 p-6">
       <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full border rounded px-4 py-2" />
-      <select name="angkatan" required class="w-full border rounded px-4 py-2">
-        <option value="">-- Pilih Angkatan --</option>
-        ${[...Array(68).keys()].map(i => `<option value="${i + 1}">Angkatan ${i + 1}</option>`).join('')}
-      </select>
+
+      <input type="text" name="angkatan" placeholder="Angkatan" required class="w-full border rounded px-4 py-2" />
+
       <input type="text" name="tahun_pktm1" placeholder="Tahun PKTM 1" required class="w-full border rounded px-4 py-2" />
       <input type="text" name="tahun_pktm2" placeholder="Tahun PKTM 2 (opsional)" class="w-full border rounded px-4 py-2" />
       <input type="text" name="tingkat_lanjutan1" placeholder="Tingkat Lanjutan 1 (opsional)" class="w-full border rounded px-4 py-2" />
@@ -28,17 +35,20 @@
       <input type="text" name="jabatan" placeholder="Jabatan Terakhir di Cabang (opsional)" class="w-full border rounded px-4 py-2" />
       <input type="text" name="tahun_menjabat" placeholder="Tahun Menjabat (opsional)" class="w-full border rounded px-4 py-2" />
       <input type="text" name="hp" placeholder="No. HP / WA" required class="w-full border rounded px-4 py-2" />
-      <input type="file" name="foto" accept="image/*" class="w-full border rounded px-4 py-2 bg-white" />
+      <input type="file" disabled class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed" />
       <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
-      <button type="submit" class="bg-yellow-600 text-white font-bold px-6 py-2 rounded-lg w-full hover:bg-yellow-700">Kirim Data</button>
+
+      <button type="submit" class="text-white font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
     </form>
 
     <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Data berhasil dikirim!</p>
   </div>
 
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+
+  <!-- JS -->
   <script src="app.js"></script>
 </body>
 </html>
