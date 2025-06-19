@@ -1,23 +1,22 @@
-// Firebase config
+// admin.js
+
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
   databaseURL: "https://ipm-kader-database-default-rtdb.firebaseio.com",
   projectId: "ipm-kader-database",
-  storageBucket: "ipm-kader-database.firebasestorage.app",
+  storageBucket: "ipm-kader-database.appspot.com",
   messagingSenderId: "199203359920",
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// UI Elements
 const loginBox = document.getElementById("loginBox");
 const adminContent = document.getElementById("adminContent");
 const loginError = document.getElementById("loginError");
 const dataBody = document.getElementById("dataBody");
 
-// Manual login
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -30,7 +29,6 @@ function login() {
   }
 }
 
-// Load data from Firebase
 function loadData() {
   dataBody.innerHTML = "";
   db.ref("data_kader").on("value", snapshot => {
@@ -48,6 +46,7 @@ function loadData() {
         <td class="border px-2 py-1">${d.jabatan || ''}</td>
         <td class="border px-2 py-1">${d.hp}</td>
         <td class="border px-2 py-1">${d.alamat}</td>
+        <td class="border px-2 py-1">${d.foto ? `<img src="${d.foto}" class="h-12 w-12 rounded-full object-cover mx-auto">` : '—'}</td>
         <td class="border px-2 py-1">
           <button onclick="editRow('${key}')" class="text-blue-600">Edit</button> |
           <button onclick="deleteRow('${key}')" class="text-red-600">Hapus</button>
@@ -57,14 +56,12 @@ function loadData() {
   });
 }
 
-// Delete function
 function deleteRow(key) {
   if (confirm("Yakin ingin menghapus data ini?")) {
     db.ref("data_kader/" + key).remove();
   }
 }
 
-// Edit function (gunakan prompt)
 function editRow(key) {
   db.ref("data_kader/" + key).once("value").then(snapshot => {
     const d = snapshot.val();
@@ -83,14 +80,12 @@ function editRow(key) {
   });
 }
 
-// Export Excel
 function exportToExcel() {
   const table = document.getElementById("dataTable");
   const wb = XLSX.utils.table_to_book(table, { sheet: "Data Kader" });
   XLSX.writeFile(wb, "data_kader_ipm.xlsx");
 }
 
-// Export PDF
 function exportToPDF() {
   const table = document.getElementById("dataTable");
   html2canvas(table).then(canvas => {
@@ -101,4 +96,4 @@ function exportToPDF() {
     pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
     pdf.save("data_kader_ipm.pdf");
   });
-}
+} 
