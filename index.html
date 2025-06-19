@@ -11,15 +11,15 @@
   <!-- Custom Style -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4 bg-center bg-cover" style="background-image: url('logo-ipmv2.jpeg');">
 
-  <div class="bg-white rounded-xl shadow-xl w-full max-w-xl">
+  <div class="backdrop-blur-md bg-white bg-opacity-80 rounded-xl shadow-xl w-full max-w-xl">
 
     <!-- Header dengan Logo dan Judul -->
     <div class="text-center border-b border-gray-300 pb-4 pt-4">
       <img src="logo-ipm.jpeg" alt="Logo IPM" class="mx-auto h-20 mb-2" />
       <h1 class="text-2xl font-bold text-yellow-700">Form Database Kader IPM</h1>
-      <p class="text-sm text-gray-600">Menghimpun Data Kader dari Angkatan 1 sampai 68</p>
+      <p class="text-sm text-gray-600">Menghimpun Data Kader Semua Angkatan</p>
     </div>
 
     <!-- Form Input -->
@@ -38,7 +38,7 @@
       <input type="file" disabled class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed" />
       <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
 
-      <button type="submit" class="text-white font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
+      <button type="submit" class="text-white bg-yellow-600 hover:bg-yellow-700 font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
     </form>
 
     <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Data berhasil dikirim!</p>
