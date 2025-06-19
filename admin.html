@@ -22,6 +22,13 @@
     <div id="adminContent" class="hidden">
       <h1 class="text-2xl font-bold mb-4 text-yellow-700 text-center">Data Kader IPM</h1>
 
+      <!-- Pencarian -->
+      <div class="mb-4">
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="🔍 Cari nama kader..."
+          class="border border-yellow-400 p-2 rounded w-full" />
+      </div>
+
+      <!-- Tabel Data -->
       <div class="overflow-x-auto mb-4">
         <table id="dataTable" class="table-auto w-full border text-sm">
           <thead class="bg-yellow-100">
@@ -41,6 +48,7 @@
         </table>
       </div>
 
+      <!-- Tombol Ekspor -->
       <div class="flex flex-wrap gap-2 justify-end mb-4">
         <button onclick="exportToExcel()" class="bg-green-600 text-white px-4 py-2 rounded">📄 Export Excel</button>
         <button onclick="exportToPDF()" class="bg-red-600 text-white px-4 py-2 rounded">📄 Export PDF</button>
