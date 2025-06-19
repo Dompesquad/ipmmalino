@@ -3,60 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin IPM</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Admin - Kader IPM</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-yellow-50 min-h-screen p-4">
+<body>
+  <header>
+    <img src="logo-ipm.png" alt="Logo IPM" class="logo" />
+    <h1>Admin Panel - Database Kader IPM Cabang Malino</h1>
+  </header>
 
-  <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow">
-    <!-- Login Form -->
-    <div id="loginBox" class="text-center">
-      <h2 class="text-xl font-bold mb-4 text-yellow-700">Login Admin IPM</h2>
-      <input id="username" type="text" placeholder="Username" class="border p-2 rounded w-full mb-2">
-      <input id="password" type="password" placeholder="Password" class="border p-2 rounded w-full mb-4">
-      <button onclick="login()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">Login</button>
-      <p id="loginError" class="text-red-600 mt-2 hidden">❌ Username atau password salah!</p>
-    </div>
-
-    <!-- Data Table -->
-    <div id="adminContent" class="hidden">
-      <h1 class="text-2xl font-bold mb-4 text-yellow-700 text-center">Data Kader IPM</h1>
-      <div class="overflow-x-auto mb-4">
-        <table id="dataTable" class="table-auto w-full border text-sm">
-          <thead class="bg-yellow-100">
-            <tr>
-              <th class="border px-2 py-1">Nama</th>
-              <th class="border px-2 py-1">Angkatan</th>
-              <th class="border px-2 py-1">PKTM 1</th>
-              <th class="border px-2 py-1">PKTM 2</th>
-              <th class="border px-2 py-1">Lanjutan</th>
-              <th class="border px-2 py-1">Jabatan</th>
-              <th class="border px-2 py-1">WA</th>
-              <th class="border px-2 py-1">Alamat</th>
-            </tr>
-          </thead>
-          <tbody id="dataBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Tombol Ekspor -->
-      <div class="flex gap-2 justify-end">
-        <button onclick="exportToExcel()" class="bg-green-600 text-white px-4 py-2 rounded">📄 Export Excel</button>
-        <button onclick="exportToPDF()" class="bg-red-600 text-white px-4 py-2 rounded">📄 Export PDF</button>
-      </div>
-    </div>
+  <div id="admin-content">
+    <table id="dataTabel">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Angkatan</th>
+          <th>PKTM 1</th>
+          <th>PKTM 2</th>
+          <th>Lanjutan 1</th>
+          <th>Lanjutan 2</th>
+          <th>Jabatan</th>
+          <th>Tahun Menjabat</th>
+          <th>Kontak</th>
+          <th>Alamat</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button onclick="exportToExcel()">Export Excel</button>
+    <button onclick="exportToPDF()">Export PDF</button>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
-  <!-- Ekspor -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <!-- Script -->
   <script src="admin.js"></script>
 </body>
 </html>
