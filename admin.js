@@ -1,4 +1,4 @@
-// Konfigurasi Firebase
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -8,7 +8,6 @@ const firebaseConfig = {
   messagingSenderId: "199203359920",
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
@@ -18,7 +17,7 @@ const adminContent = document.getElementById("adminContent");
 const loginError = document.getElementById("loginError");
 const dataBody = document.getElementById("dataBody");
 
-// Login manual
+// Login
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -31,7 +30,7 @@ function login() {
   }
 }
 
-// Load data
+// Ambil Data
 function loadData() {
   dataBody.innerHTML = "";
   db.ref("data_kader").on("value", snapshot => {
@@ -58,12 +57,11 @@ function loadData() {
   });
 }
 
-// Filter pencarian nama
+// Filter
 function filterTable() {
   const input = document.getElementById("searchInput");
   const filter = input.value.toLowerCase();
   const rows = dataBody.getElementsByTagName("tr");
-
   for (let i = 0; i < rows.length; i++) {
     const namaCell = rows[i].getElementsByTagName("td")[0];
     if (namaCell) {
@@ -73,14 +71,14 @@ function filterTable() {
   }
 }
 
-// Hapus data
+// Hapus
 function deleteRow(key) {
   if (confirm("Yakin ingin menghapus data ini?")) {
     db.ref("data_kader/" + key).remove();
   }
 }
 
-// Edit data
+// Edit
 function editRow(key) {
   db.ref("data_kader/" + key).once("value").then(snapshot => {
     const d = snapshot.val();
@@ -100,23 +98,23 @@ function editRow(key) {
   });
 }
 
-// Export ke Excel
+// Export Excel
 function exportToExcel() {
   db.ref("data_kader").once("value", snapshot => {
     const data = [];
     snapshot.forEach(child => {
       const d = child.val();
       data.push({
-        Nama: d.nama || "",
-        Angkatan: d.angkatan || "",
-        "PKTM 1": d.tahun_pktm1 || "",
-        "PKTM 2": d.tahun_pktm2 || "",
-        "Tingkat Lanjutan 1": d.tingkat_lanjutan1 || "",
-        "Tingkat Lanjutan 2": d.tingkat_lanjutan2 || "",
-        Jabatan: d.jabatan || "",
-        "Tahun Menjabat": d.tahun_menjabat || "",
-        "No. HP / WA": d.hp || "",
-        Alamat: d.alamat || ""
+        Nama: d.nama,
+        Angkatan: d.angkatan,
+        "PKTM 1": d.tahun_pktm1,
+        "PKTM 2": d.tahun_pktm2,
+        "Lanjutan 1": d.tingkat_lanjutan1,
+        "Lanjutan 2": d.tingkat_lanjutan2,
+        Jabatan: d.jabatan,
+        "Tahun Menjabat": d.tahun_menjabat,
+        WA: d.hp,
+        Alamat: d.alamat
       });
     });
 
@@ -127,7 +125,20 @@ function exportToExcel() {
   });
 }
 
-// Export ke JSON
+// Export PDF
+function exportToPDF() {
+  const table = document.getElementById("dataTable");
+  html2canvas(table).then(canvas => {
+    const img = canvas.toDataURL("image/png");
+    const pdf = new jspdf.jsPDF('l', 'pt', 'a4');
+    const width = pdf.internal.pageSize.getWidth();
+    const height = (canvas.height * width) / canvas.width;
+    pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
+    pdf.save("data_kader_ipm.pdf");
+  });
+}
+
+// Export JSON
 function exportToJSON() {
   db.ref("data_kader").once("value", snapshot => {
     const data = snapshot.val();
@@ -144,15 +155,7 @@ function exportToJSON() {
   });
 }
 
-// Export ke PDF
-function exportToPDF() {
-  const table = document.getElementById("dataTable");
-  html2canvas(table).then(canvas => {
-    const img = canvas.toDataURL("image/png");
-    const pdf = new jspdf.jsPDF('l', 'pt', 'a4');
-    const width = pdf.internal.pageSize.getWidth();
-    const height = (canvas.height * width) / canvas.width;
-    pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
-    pdf.save("data_kader_ipm.pdf");
-  });
+// Cetak Tabel
+function printTable() {
+  window.print();
 }
