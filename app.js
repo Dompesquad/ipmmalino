@@ -1,4 +1,4 @@
-// Konfigurasi Firebase (pastikan cocok dengan project Firebase kamu)
+// Konfigurasi Firebase (pastikan sesuai)
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -9,12 +9,12 @@ const firebaseConfig = {
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
 
-// Inisialisasi Firebase
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.database();
 const storage = firebase.storage();
 
-document.getElementById("kaderForm").addEventListener("submit", function(e) {
+// Ambil elemen form
+document.getElementById("kaderForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const nama = document.getElementById("nama").value;
@@ -27,28 +27,19 @@ document.getElementById("kaderForm").addEventListener("submit", function(e) {
   const tahunMenjabat = document.getElementById("tahunMenjabat").value;
   const kontak = document.getElementById("kontak").value;
   const alamat = document.getElementById("alamat").value;
-  const fotoFile = document.getElementById("foto").files[0];
-
+  const foto = document.getElementById("foto").files[0];
   const status = document.getElementById("status");
-  status.innerText = "Menyimpan data...";
 
-  if (fotoFile) {
-    // Upload foto ke Firebase Storage
-    const storageRef = storage.ref('fotos/' + Date.now() + "_" + fotoFile.name);
-    storageRef.put(fotoFile).then((snapshot) => {
-      snapshot.ref.getDownloadURL().then((url) => {
-        simpanData(url);
-      });
-    }).catch((error) => {
-      status.innerText = "Gagal mengunggah foto.";
-    });
-  } else {
-    // Tanpa foto
-    simpanData("");
-  }
+  let fotoUrl = "";
 
-  function simpanData(fotoUrl) {
-    const data = {
+  try {
+    if (foto) {
+      const storageRef = storage.ref(`foto_kader/${Date.now()}_${foto.name}`);
+      await storageRef.put(foto);
+      fotoUrl = await storageRef.getDownloadURL();
+    }
+
+    const newData = {
       nama,
       angkatan,
       pktm1,
@@ -59,13 +50,15 @@ document.getElementById("kaderForm").addEventListener("submit", function(e) {
       tahunMenjabat,
       kontak,
       alamat,
-      fotoUrl,
-      waktu: new Date().toISOString()
+      fotoUrl
     };
 
-    database.ref("kader").push(data, () => {
-      document.getElementById("kaderForm").reset();
-      status.innerText = "✅ Data berhasil dikirim!";
-    });
+    await db.ref("kader").push(newData);
+
+    status.innerText = "✅ Data berhasil dikirim!";
+    this.reset();
+  } catch (error) {
+    console.error("❌ Gagal menyimpan data:", error);
+    status.innerText = "❌ Gagal mengirim data!";
   }
 });
