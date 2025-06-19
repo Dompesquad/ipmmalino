@@ -58,6 +58,21 @@ function loadData() {
   });
 }
 
+// Filter pencarian nama
+function filterTable() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toLowerCase();
+  const rows = dataBody.getElementsByTagName("tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    const namaCell = rows[i].getElementsByTagName("td")[0];
+    if (namaCell) {
+      const txtValue = namaCell.textContent || namaCell.innerText;
+      rows[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+    }
+  }
+}
+
 // Hapus data
 function deleteRow(key) {
   if (confirm("Yakin ingin menghapus data ini?")) {
@@ -85,7 +100,7 @@ function editRow(key) {
   });
 }
 
-// Export ke Excel (langsung dari Firebase)
+// Export ke Excel
 function exportToExcel() {
   db.ref("data_kader").once("value", snapshot => {
     const data = [];
@@ -129,7 +144,7 @@ function exportToJSON() {
   });
 }
 
-// Export PDF dari tabel
+// Export ke PDF
 function exportToPDF() {
   const table = document.getElementById("dataTable");
   html2canvas(table).then(canvas => {
