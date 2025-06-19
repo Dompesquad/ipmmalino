@@ -1,20 +1,24 @@
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
+  databaseURL: "https://ipm-kader-database-default-rtdb.firebaseio.com",
   projectId: "ipm-kader-database",
   storageBucket: "ipm-kader-database.appspot.com",
   messagingSenderId: "199203359920",
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
 
+// Inisialisasi Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
+const db = firebase.database();
 
-document.getElementById("kaderForm").addEventListener("submit", async function(e) {
+// Tangani submit form
+const form = document.getElementById("kaderForm");
+const suksesMsg = document.getElementById("suksesMsg");
+
+form.addEventListener("submit", function (e) {
   e.preventDefault();
-  const form = e.target;
-  const fotoFile = form.foto.files[0];
 
   const data = {
     nama: form.nama.value,
@@ -29,20 +33,16 @@ document.getElementById("kaderForm").addEventListener("submit", async function(e
     alamat: form.alamat.value
   };
 
-  try {
-    if (fotoFile) {
-      const storageRef = storage.ref("foto_kader/" + Date.now() + "_" + fotoFile.name);
-      const snapshot = await storageRef.put(fotoFile);
-      const fotoURL = await snapshot.ref.getDownloadURL();
-      data.foto = fotoURL;
+  db.ref("data_kader").push(data, function (error) {
+    if (error) {
+      alert("❌ Gagal menyimpan data: " + error.message);
     } else {
-      data.foto = "";
+      suksesMsg.textContent = "✅ Data berhasil dikirim!";
+      suksesMsg.classList.remove("hidden");
+      form.reset();
+      setTimeout(() => {
+        suksesMsg.classList.add("hidden");
+      }, 5000);
     }
-
-    await db.collection("kader_ipm").add(data);
-    document.getElementById("suksesMsg").classList.remove("hidden");
-    form.reset();
-  } catch (error) {
-    alert("❌ Gagal menyimpan data: " + error.message);
-  }
+  });
 });
