@@ -2,51 +2,47 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DATABASE IPM CABANG MALINO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Data Kader IPM</title>
+
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- File CSS Kustom -->
   <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
-<body>
-  <div class="container">
-    <img src="logo-ipmv2.jpeg" alt="Logo IPM" class="logo" />
-    <h2>Form Pendataan Kader IPM Cabang Malino</h2>
-    <form id="kaderForm">
-      <label>Nama Lengkap <span class="wajib">*</span></label>
-      <input type="text" id="nama" required />
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white shadow-xl w-full max-w-xl">
+    <h1 class="text-2xl font-bold text-center mb-4">Form Data Kader IPM</h1>
+    <form id="kaderForm" class="space-y-4">
 
-      <label>Angkatan Ke- <span class="wajib">*</span></label>
-      <input type="number" id="angkatan" required />
+      <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full border rounded px-4 py-2" />
 
-      <label>Tahun PKTM 1 <span class="wajib">*</span></label>
-      <input type="text" id="tahunPKTM1" required />
+      <select name="angkatan" required class="w-full border rounded px-4 py-2" id="angkatanDropdown">
+        <option value="">-- Pilih Angkatan --</option>
+      </select>
 
-      <label>Tahun PKTM 2</label>
-      <input type="text" id="tahunPKTM2" />
+      <input type="text" name="tahun_pktm1" placeholder="Tahun PKTM 1" required class="w-full border rounded px-4 py-2" />
+      <input type="text" name="tahun_pktm2" placeholder="Tahun PKTM 2 (opsional)" class="w-full border rounded px-4 py-2" />
+      <input type="text" name="tingkat_lanjutan1" placeholder="Tingkat Lanjutan 1 (opsional)" class="w-full border rounded px-4 py-2" />
+      <input type="text" name="tingkat_lanjutan2" placeholder="Tingkat Lanjutan 2 (opsional)" class="w-full border rounded px-4 py-2" />
+      <input type="text" name="jabatan" placeholder="Jabatan Terakhir di Cabang (opsional)" class="w-full border rounded px-4 py-2" />
+      <input type="text" name="tahun_menjabat" placeholder="Tahun Menjabat (opsional)" class="w-full border rounded px-4 py-2" />
+      <input type="text" name="hp" placeholder="No. HP / WA" required class="w-full border rounded px-4 py-2" />
+      <input type="file" disabled class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed" />
+      <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
 
-      <label>Tahun Program Lanjutan</label>
-      <input type="text" id="programLanjutan" />
-
-      <label>Pimpinan Cabang Tahun</label>
-      <input type="text" id="pimpinanCabang" />
-
-      <label>Nomor WhatsApp</label>
-      <input type="text" id="nohp" />
-
-      <label>Upload Foto</label>
-      <input type="file" id="foto" accept="image/*" />
-
-      <label>Alamat <span class="wajib">*</span></label>
-      <input type="text" id="alamat" required />
-
-      <button type="submit">Kirim</button>
+      <button type="submit" class="text-white font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
     </form>
-    <p id="notif" style="color: green; margin-top: 10px;"></p>
-    <p class="credit">Credit by Ruang Pena</p>
+
+    <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Data berhasil dikirim!</p>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+  <!-- File JavaScript Utama -->
+  <script src="app.js"></script>
 </body>
 </html>
