@@ -1,5 +1,4 @@
-// admin.js
-
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -9,6 +8,7 @@ const firebaseConfig = {
   messagingSenderId: "199203359920",
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
@@ -31,11 +31,20 @@ function login() {
 
 function loadData() {
   dataBody.innerHTML = "";
-  db.ref("data_kader").on("value", snapshot => {
-    dataBody.innerHTML = "";
+  db.ref("data_kader").once("value").then(snapshot => {
+    const dataList = [];
     snapshot.forEach(child => {
       const d = child.val();
-      const key = child.key;
+      d.key = child.key;
+      dataList.push(d);
+    });
+
+    // Urutkan berdasarkan angkatan secara numerik
+    dataList.sort((a, b) => {
+      return parseInt(a.angkatan) - parseInt(b.angkatan);
+    });
+
+    dataList.forEach(d => {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td class="border px-2 py-1">${d.nama}</td>
@@ -46,11 +55,11 @@ function loadData() {
         <td class="border px-2 py-1">${d.jabatan || ''}</td>
         <td class="border px-2 py-1">${d.hp}</td>
         <td class="border px-2 py-1">${d.alamat}</td>
-        <td class="border px-2 py-1">${d.foto ? `<img src="${d.foto}" class="h-12 w-12 rounded-full object-cover mx-auto">` : '—'}</td>
-        <td class="border px-2 py-1">
-          <button onclick="editRow('${key}')" class="text-blue-600">Edit</button> |
-          <button onclick="deleteRow('${key}')" class="text-red-600">Hapus</button>
-        </td>`;
+        <td class="border px-2 py-1 text-center">
+          <button onclick="editRow('${d.key}')" class="text-blue-600">Edit</button> |
+          <button onclick="deleteRow('${d.key}')" class="text-red-600">Hapus</button>
+        </td>
+      `;
       dataBody.appendChild(row);
     });
   });
@@ -59,6 +68,7 @@ function loadData() {
 function deleteRow(key) {
   if (confirm("Yakin ingin menghapus data ini?")) {
     db.ref("data_kader/" + key).remove();
+    loadData();
   }
 }
 
@@ -77,15 +87,18 @@ function editRow(key) {
       alamat: prompt("Alamat:", d.alamat) || d.alamat
     };
     db.ref("data_kader/" + key).update(updated);
+    loadData();
   });
 }
 
+// Export ke Excel
 function exportToExcel() {
   const table = document.getElementById("dataTable");
   const wb = XLSX.utils.table_to_book(table, { sheet: "Data Kader" });
   XLSX.writeFile(wb, "data_kader_ipm.xlsx");
 }
 
+// Export ke PDF
 function exportToPDF() {
   const table = document.getElementById("dataTable");
   html2canvas(table).then(canvas => {
@@ -96,4 +109,4 @@ function exportToPDF() {
     pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
     pdf.save("data_kader_ipm.pdf");
   });
-} 
+}
