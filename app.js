@@ -1,4 +1,3 @@
-// Konfigurasi Firebase (pastikan sesuai)
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -13,7 +12,6 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const storage = firebase.storage();
 
-// Ambil elemen form
 document.getElementById("kaderForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -34,12 +32,12 @@ document.getElementById("kaderForm").addEventListener("submit", async function (
 
   try {
     if (foto) {
-      const storageRef = storage.ref(`foto_kader/${Date.now()}_${foto.name}`);
-      await storageRef.put(foto);
-      fotoUrl = await storageRef.getDownloadURL();
+      const fotoRef = storage.ref(`foto_kader/${Date.now()}_${foto.name}`);
+      await fotoRef.put(foto);
+      fotoUrl = await fotoRef.getDownloadURL();
     }
 
-    const newData = {
+    const dataKader = {
       nama,
       angkatan,
       pktm1,
@@ -53,12 +51,12 @@ document.getElementById("kaderForm").addEventListener("submit", async function (
       fotoUrl
     };
 
-    await db.ref("kader").push(newData);
+    await db.ref("kader").push(dataKader); // ✅ PENTING! HARUS PUSH KE "kader"
 
     status.innerText = "✅ Data berhasil dikirim!";
     this.reset();
-  } catch (error) {
-    console.error("❌ Gagal menyimpan data:", error);
+  } catch (err) {
+    console.error("Gagal menyimpan:", err);
     status.innerText = "❌ Gagal mengirim data!";
   }
 });
