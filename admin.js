@@ -1,4 +1,4 @@
-// Konfigurasi Firebase
+// Firebase config (sama dengan index)
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -11,159 +11,105 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const tbody = document.querySelector("tbody");
 
-let dataKader = [];
-let editId = "";
+const loginForm = document.getElementById("loginForm");
+const adminPanel = document.getElementById("adminPanel");
 
-// Login
-function login() {
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
-  const status = document.getElementById("loginStatus");
-
+loginForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const u = username.value.trim();
+  const p = password.value.trim();
   if (u === "admin" && p === "ipm123") {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("admin-content").style.display = "block";
+    loginForm.style.display = "none";
+    adminPanel.style.display = "block";
     loadData();
   } else {
-    status.innerText = "❌ Username atau password salah.";
+    alert("Login gagal. Username atau password salah.");
   }
-}
-window.login = login;
+});
 
-// Load dan urutkan data
+let allData = [];
+let currentPage = 1;
+const perPage = 10;
+
 function loadData() {
-  db.ref("kader").once("value", snapshot => {
-    dataKader = [];
-    snapshot.forEach(child => {
-      let data = child.val();
-      data.id = child.key;
-      dataKader.push(data);
+  db.ref("kader").once("value", (snapshot) => {
+    const data = [];
+    snapshot.forEach((child) => {
+      data.push({ key: child.key, ...child.val() });
     });
-    dataKader.sort((a, b) => parseInt(a.angkatan) - parseInt(b.angkatan));
-    tampilkanData(1);
+
+    // Sort by angkatan ascending
+    data.sort((a, b) => Number(a.angkatan) - Number(b.angkatan));
+    allData = data;
+    showPage(1);
+    createPagination();
   });
 }
 
-// Tampilkan data dengan pagination
-function tampilkanData(page) {
-  const perPage = 10;
+function showPage(page) {
+  currentPage = page;
+  const tbody = document.getElementById("kaderBody");
+  tbody.innerHTML = "";
   const start = (page - 1) * perPage;
   const end = start + perPage;
-  const pageData = dataKader.slice(start, end);
-  tbody.innerHTML = "";
+  const dataPage = allData.slice(start, end);
 
-  pageData.forEach(data => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${data.fotoUrl ? `<img src="${data.fotoUrl}" class="foto-kader" />` : "-"}</td>
-      <td>${data.nama}</td>
-      <td>${data.angkatan}</td>
-      <td>${data.pktm1}</td>
-      <td>${data.pktm2 || ""}</td>
-      <td>${data.lanjutan1 || ""}</td>
-      <td>${data.lanjutan2 || ""}</td>
-      <td>${data.jabatan || ""}</td>
-      <td>${data.tahunMenjabat || ""}</td>
-      <td>${data.kontak}</td>
-      <td>${data.alamat}</td>
+  dataPage.forEach((item) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.nama}</td>
+      <td>${item.angkatan}</td>
+      <td>${item.wa}</td>
+      <td>${item.fotoUrl ? `<img src="${item.fotoUrl}" class="foto-preview"/>` : '-'}</td>
       <td>
-        <button onclick="editData('${data.id}')">Edit</button>
-        <button onclick="hapusData('${data.id}')">Hapus</button>
+        <button onclick="editData('${item.key}')">✏️</button>
+        <button onclick="deleteData('${item.key}')">🗑️</button>
       </td>
     `;
-    tbody.appendChild(row);
+    tbody.appendChild(tr);
   });
 }
 
-// Hapus data
-function hapusData(id) {
-  if (confirm("Yakin ingin menghapus?")) {
-    db.ref("kader/" + id).remove().then(loadData);
+function createPagination() {
+  const totalPages = Math.ceil(allData.length / perPage);
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.className = (i === currentPage) ? "active" : "";
+    btn.onclick = () => showPage(i);
+    pagination.appendChild(btn);
   }
 }
 
-// Tampilkan modal edit
-function editData(id) {
-  const data = dataKader.find(d => d.id === id);
-  if (!data) return;
-
-  editId = id;
-  document.getElementById("edit_nama").value = data.nama;
-  document.getElementById("edit_angkatan").value = data.angkatan;
-  document.getElementById("edit_pktm1").value = data.pktm1;
-  document.getElementById("edit_pktm2").value = data.pktm2 || "";
-  document.getElementById("edit_lanjutan1").value = data.lanjutan1 || "";
-  document.getElementById("edit_lanjutan2").value = data.lanjutan2 || "";
-  document.getElementById("edit_jabatan").value = data.jabatan || "";
-  document.getElementById("edit_tahunMenjabat").value = data.tahunMenjabat || "";
-  document.getElementById("edit_kontak").value = data.kontak;
-  document.getElementById("edit_alamat").value = data.alamat;
-
-  document.getElementById("editModal").style.display = "block";
+function deleteData(key) {
+  if (confirm("Yakin ingin menghapus data ini?")) {
+    db.ref("kader/" + key).remove().then(() => loadData());
+  }
 }
 
-// Tutup modal
-function tutupModal() {
-  document.getElementById("editModal").style.display = "none";
+function editData(key) {
+  const item = allData.find(d => d.key === key);
+  const newNama = prompt("Edit nama:", item.nama);
+  const newAngkatan = prompt("Edit angkatan:", item.angkatan);
+  if (newNama && newAngkatan) {
+    db.ref("kader/" + key).update({ nama: newNama, angkatan: newAngkatan }).then(() => loadData());
+  }
 }
 
-// Simpan perubahan
-function simpanEdit() {
-  const updated = {
-    nama: document.getElementById("edit_nama").value.trim(),
-    angkatan: document.getElementById("edit_angkatan").value.trim(),
-    pktm1: document.getElementById("edit_pktm1").value.trim(),
-    pktm2: document.getElementById("edit_pktm2").value.trim(),
-    lanjutan1: document.getElementById("edit_lanjutan1").value.trim(),
-    lanjutan2: document.getElementById("edit_lanjutan2").value.trim(),
-    jabatan: document.getElementById("edit_jabatan").value.trim(),
-    tahunMenjabat: document.getElementById("edit_tahunMenjabat").value.trim(),
-    kontak: document.getElementById("edit_kontak").value.trim(),
-    alamat: document.getElementById("edit_alamat").value.trim()
-  };
-
-  db.ref("kader/" + editId).update(updated).then(() => {
-    tutupModal();
-    loadData();
-  });
-}
-
-// Export ke Excel
 function exportToExcel() {
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(dataKader);
-  XLSX.utils.book_append_sheet(wb, ws, "Kader IPM");
-  XLSX.writeFile(wb, "data-kader-ipm.xlsx");
-}
+  let csv = "Nama,Angkatan,PKTM1,PKTM2,Tingkat Lanjutan 1,Tingkat Lanjutan 2,Jabatan,Tahun,WA,Alamat\n";
+  allData.forEach(d => {
+    csv += `${d.nama},${d.angkatan},${d.pktm1||''},${d.pktm2||''},${d.lanjutan1||''},${d.lanjutan2||''},${d.jabatan||''},${d.tahunJabat||''},${d.wa},${d.alamat}\n`;
+  });
 
-// Export ke PDF
-function exportToPDF() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'pt', 'a4');
-  const perPage = 10;
-  const totalPages = Math.ceil(dataKader.length / perPage);
-
-  let y = 40;
-
-  for (let p = 0; p < totalPages; p++) {
-    let pageData = dataKader.slice(p * perPage, (p + 1) * perPage);
-
-    pdf.setFontSize(12);
-    pdf.text("Data Kader IPM Cabang Malino", 40, y);
-    y += 20;
-
-    pageData.forEach((data, i) => {
-      pdf.text(`${i + 1 + p * perPage}. ${data.nama} - Angkatan ${data.angkatan}`, 40, y);
-      y += 15;
-    });
-
-    if (p < totalPages - 1) {
-      pdf.addPage();
-      y = 40;
-    }
-  }
-
-  pdf.save("data-kader-ipm.pdf");
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data-kader-ipm.csv";
+  a.click();
 }
