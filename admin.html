@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin - Database IPM</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+
+  <!-- Export libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-<body>
+<body class="bg-admin">
 
   <header>
     <img src="logo-ipm.jpeg" alt="Logo IPM" class="logo" />
@@ -25,6 +32,11 @@
   </div>
 
   <div id="admin-content" style="display: none;">
+    <div style="margin: 10px 20px;">
+      <button onclick="exportToExcel()">Export ke Excel</button>
+      <button onclick="exportToPDF()">Export ke PDF</button>
+    </div>
+
     <table id="dataTabel">
       <thead>
         <tr>
@@ -46,7 +58,29 @@
     </table>
   </div>
 
-  <!-- Tambahkan defer di sini -->
+  <!-- Modal Edit -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Data Kader</h3>
+      <input type="text" id="edit_nama" placeholder="Nama Lengkap" />
+      <input type="text" id="edit_angkatan" placeholder="Angkatan" />
+      <input type="text" id="edit_pktm1" placeholder="PKTM 1" />
+      <input type="text" id="edit_pktm2" placeholder="PKTM 2" />
+      <input type="text" id="edit_lanjutan1" placeholder="Lanjutan 1" />
+      <input type="text" id="edit_lanjutan2" placeholder="Lanjutan 2" />
+      <input type="text" id="edit_jabatan" placeholder="Jabatan" />
+      <input type="text" id="edit_tahunMenjabat" placeholder="Tahun Menjabat" />
+      <input type="text" id="edit_kontak" placeholder="Kontak" />
+      <input type="text" id="edit_alamat" placeholder="Alamat" />
+      <button onclick="simpanEdit()">Simpan Perubahan</button>
+      <button onclick="tutupModal()">Batal</button>
+    </div>
+  </div>
+
+  <footer class="footer-credit">
+    <p>by <strong>Ruang Pena</strong></p>
+  </footer>
+
   <script src="admin.js" defer></script>
 </body>
 </html>
