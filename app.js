@@ -1,3 +1,4 @@
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -8,6 +9,7 @@ const firebaseConfig = {
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
 
+// Inisialisasi Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const storage = firebase.storage();
@@ -15,48 +17,28 @@ const storage = firebase.storage();
 document.getElementById("kaderForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const nama = document.getElementById("nama").value;
-  const angkatan = document.getElementById("angkatan").value;
-  const pktm1 = document.getElementById("pktm1").value;
-  const pktm2 = document.getElementById("pktm2").value;
-  const lanjutan1 = document.getElementById("lanjutan1").value;
-  const lanjutan2 = document.getElementById("lanjutan2").value;
-  const jabatan = document.getElementById("jabatan").value;
-  const tahunMenjabat = document.getElementById("tahunMenjabat").value;
-  const kontak = document.getElementById("kontak").value;
-  const alamat = document.getElementById("alamat").value;
-  const foto = document.getElementById("foto").files[0];
-  const status = document.getElementById("status");
+  const data = {
+    nama: nama.value,
+    angkatan: angkatan.value,
+    pktm1: pktm1.value,
+    pktm2: pktm2.value,
+    lanjutan1: lanjutan1.value,
+    lanjutan2: lanjutan2.value,
+    jabatan: jabatan.value,
+    tahunJabat: tahunJabat.value,
+    wa: wa.value,
+    alamat: alamat.value
+  };
 
-  let fotoUrl = "";
-
-  try {
-    if (foto) {
-      const fotoRef = storage.ref(`foto_kader/${Date.now()}_${foto.name}`);
-      await fotoRef.put(foto);
-      fotoUrl = await fotoRef.getDownloadURL();
-    }
-
-    const dataKader = {
-      nama,
-      angkatan,
-      pktm1,
-      pktm2,
-      lanjutan1,
-      lanjutan2,
-      jabatan,
-      tahunMenjabat,
-      kontak,
-      alamat,
-      fotoUrl
-    };
-
-    await db.ref("kader").push(dataKader); // ✅ PENTING! HARUS PUSH KE "kader"
-
-    status.innerText = "✅ Data berhasil dikirim!";
-    this.reset();
-  } catch (err) {
-    console.error("Gagal menyimpan:", err);
-    status.innerText = "❌ Gagal mengirim data!";
+  const file = foto.files[0];
+  if (file) {
+    const storageRef = storage.ref('fotos/' + Date.now() + "_" + file.name);
+    await storageRef.put(file);
+    const url = await storageRef.getDownloadURL();
+    data.fotoUrl = url;
   }
+
+  await db.ref("kader").push(data);
+  document.getElementById("kaderForm").reset();
+  document.getElementById("status").textContent = "✅ Data berhasil terkirim!";
 });
