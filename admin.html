@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin IPM</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
 <body class="bg-yellow-50 min-h-screen p-4">
 
   <div class="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow">
-
-    <!-- Login Manual -->
+    <!-- Login Admin -->
     <div id="loginBox" class="text-center">
       <h2 class="text-xl font-bold mb-4 text-yellow-700">Login Admin IPM</h2>
       <input id="username" type="text" placeholder="Username" class="border p-2 rounded w-full mb-2">
@@ -42,21 +41,20 @@
         </table>
       </div>
 
-      <div class="flex gap-2 justify-end mb-4">
+      <div class="flex flex-wrap gap-2 justify-end mb-4">
         <button onclick="exportToExcel()" class="bg-green-600 text-white px-4 py-2 rounded">📄 Export Excel</button>
         <button onclick="exportToPDF()" class="bg-red-600 text-white px-4 py-2 rounded">📄 Export PDF</button>
+        <button onclick="exportToJSON()" class="bg-blue-600 text-white px-4 py-2 rounded">🧾 Backup JSON</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase & Tools -->
+  <!-- Firebase & Library -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <!-- File Admin JS -->
   <script src="admin.js"></script>
 </body>
 </html>
