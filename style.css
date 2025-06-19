@@ -1,51 +1,102 @@
+/* Global Style */
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #fffde7, #fff9c4);
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: rgba(255, 255, 150, 0.3); /* kuning IPM */
+  padding: 0;
 }
 
+/* Container utama */
 .container {
-  padding: 2em;
-  max-width: 600px;
-  margin: auto;
-  background: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 500px;
+  margin: 30px auto;
+  background: #ffffffcc; /* putih transparan */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
   position: relative;
-  z-index: 2;
 }
 
-h1 {
-  text-align: center;
+/* Logo IPM */
+.logo {
+  width: 90px;
+  margin-bottom: 10px;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* Judul */
+h2 {
+  margin-bottom: 20px;
+  color: #333;
 }
 
-input, button {
+/* Label */
+label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+  margin-top: 12px;
+  color: #444;
+}
+
+/* Tanda bintang untuk input wajib */
+.wajib {
+  color: red;
+}
+
+/* Input dan tombol */
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+  width: 100%;
   padding: 10px;
-  font-size: 1em;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
+/* Tombol kirim */
 button {
-  background: #ffc107;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #ffca28;
   border: none;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+button:hover {
+  background-color: #ffc107;
+}
+
+/* Notifikasi pengiriman */
+#notif {
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Credit */
 .credit {
-  margin-top: 2em;
-  text-align: center;
-  font-size: 0.9em;
+  margin-top: 25px;
+  font-size: 13px;
   color: #666;
+  font-style: italic;
 }
 
-.background-logo {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 80px;
-  opacity: 0.1;
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    margin: 15px;
+    padding: 20px;
+  }
+
+  .logo {
+    width: 70px;
+  }
 }
