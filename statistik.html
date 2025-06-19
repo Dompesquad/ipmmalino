@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Statistik Kader IPM</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-yellow-50 min-h-screen p-6">
+
+  <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow">
+    <h1 class="text-2xl font-bold text-yellow-700 mb-6 text-center">📊 Statistik Data Kader IPM</h1>
+
+    <!-- Chart Containers -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-lg font-semibold mb-2 text-center">Jumlah Kader per Angkatan</h2>
+        <canvas id="angkatanChart"></canvas>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold mb-2 text-center">PKTM 2 (Ya vs Tidak)</h2>
+        <canvas id="pktm2Chart"></canvas>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold mb-2 text-center">Tingkat Lanjutan (Ada vs Tidak)</h2>
+        <canvas id="lanjutanChart"></canvas>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold mb-2 text-center">Jumlah Berdasarkan Tahun Menjabat</h2>
+        <canvas id="menjabatChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script src="statistik.js"></script>
+</body>
+</html>
