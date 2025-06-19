@@ -1,45 +1,31 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Form Data Kader IPM</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
+  <title>Database Kader IPM</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white rounded-xl shadow-xl w-full max-w-xl">
-    <!-- Header dengan Logo dari URL publik -->
-    <div class="text-center border-b border-gray-300 pb-4 pt-4">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Logo_IPM.png"
-           alt="Logo IPM"
-           class="mx-auto h-20 mb-2"/>
-      <h1 class="text-2xl font-bold text-yellow-700">Form Database Kader IPM</h1>
-      <p class="text-sm text-gray-600">Menghimpun Data Kader dari Angkatan 1 sampai 68</p>
-    </div>
+<body>
+  <header>
+    <img src="logo-ipm.jpeg" alt="Logo IPM" class="logo" />
+    <h1>Database Kader Ikatan Pelajar Muhammadiyah Cabang Malino</h1>
+  </header>
 
-    <form id="kaderForm" class="space-y-4 p-6">
-      <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full border rounded px-4 py-2"/>
-      <select name="angkatan" required class="w-full border rounded px-4 py-2" id="angkatanDropdown">
-        <option value="">-- Pilih Angkatan --</option>
-      </select>
-      <input type="text" name="tahun_pktm1" placeholder="Tahun PKTM 1" required class="w-full border rounded px-4 py-2"/>
-      <input type="text" name="tahun_pktm2" placeholder="Tahun PKTM 2 (opsional)" class="w-full border rounded px-4 py-2"/>
-      <input type="text" name="tingkat_lanjutan1" placeholder="Tingkat Lanjutan 1 (opsional)" class="w-full border rounded px-4 py-2"/>
-      <input type="text" name="tingkat_lanjutan2" placeholder="Tingkat Lanjutan 2 (opsional)" class="w-full border rounded px-4 py-2"/>
-      <input type="text" name="jabatan" placeholder="Jabatan Terakhir di Cabang (opsional)" class="w-full border rounded px-4 py-2"/>
-      <input type="text" name="tahun_menjabat" placeholder="Tahun Menjabat (opsional)" class="w-full border rounded px-4 py-2"/>
-      <input type="text" name="hp" placeholder="No. HP / WA" required class="w-full border rounded px-4 py-2"/>
-      <input type="file" disabled class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed"/>
-      <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
-      <button type="submit" class="text-white font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
-    </form>
+  <form id="kaderForm">
+    <input type="text" placeholder="Nama Lengkap" id="nama" required />
+    <input type="text" placeholder="Angkatan" id="angkatan" required />
+    <input type="text" placeholder="Tahun PKTM 1" id="pktm1" required />
+    <input type="text" placeholder="Tahun PKTM 2 (opsional)" id="pktm2" />
+    <input type="text" placeholder="Tingkat Lanjutan (opsional)" id="lanjutan1" />
+    <input type="text" placeholder="Tingkat Lanjutan 2 (opsional)" id="lanjutan2" />
+    <input type="text" placeholder="Jabatan Terakhir di Cabang (opsional)" id="jabatan" />
+    <input type="text" placeholder="Tahun Menjabat (opsional)" id="tahunMenjabat" />
+    <input type="text" placeholder="No. HP / WA" id="kontak" required />
+    <input type="text" placeholder="Alamat" id="alamat" required />
+    <button type="submit">Kirim</button>
+  </form>
 
-    <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Data berhasil dikirim!</p>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
