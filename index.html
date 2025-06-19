@@ -25,9 +25,7 @@
     <!-- Form Input -->
     <form id="kaderForm" class="space-y-4 p-6">
       <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full border rounded px-4 py-2" />
-
       <input type="text" name="angkatan" placeholder="Angkatan" required class="w-full border rounded px-4 py-2" />
-
       <input type="text" name="tahun_pktm1" placeholder="Tahun PKTM 1" required class="w-full border rounded px-4 py-2" />
       <input type="text" name="tahun_pktm2" placeholder="Tahun PKTM 2 (opsional)" class="w-full border rounded px-4 py-2" />
       <input type="text" name="tingkat_lanjutan1" placeholder="Tingkat Lanjutan 1 (opsional)" class="w-full border rounded px-4 py-2" />
@@ -35,9 +33,8 @@
       <input type="text" name="jabatan" placeholder="Jabatan Terakhir di Cabang (opsional)" class="w-full border rounded px-4 py-2" />
       <input type="text" name="tahun_menjabat" placeholder="Tahun Menjabat (opsional)" class="w-full border rounded px-4 py-2" />
       <input type="text" name="hp" placeholder="No. HP / WA" required class="w-full border rounded px-4 py-2" />
-      <input type="file" disabled class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed" />
+      <input type="file" id="foto" name="foto" accept="image/*" class="w-full border rounded px-4 py-2" />
       <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
-
       <button type="submit" class="text-white bg-yellow-600 hover:bg-yellow-700 font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
     </form>
 
@@ -46,7 +43,8 @@
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
   <!-- JS -->
   <script src="app.js"></script>
