@@ -1,0 +1,29 @@
+/* Background utama kuning muda */
+body {
+  background-color: #fffbe6; /* kuning pucat */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Box form */
+form {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+/* Judul form */
+h1 {
+  color: #d4a900; /* kuning emas IPM */
+}
+
+/* Tombol Kirim */
+button[type="submit"] {
+  background-color: #d4a900; /* kuning IPM */
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #b58c00;
+}
+
+
