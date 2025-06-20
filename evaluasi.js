@@ -19,22 +19,20 @@ form.addEventListener("submit", function (e) {
 
   const data = {
     nama: form.nama.value,
-    asal: form.asal.value,
-    materi: {
-      m1: form.m1.value,
-      m2: form.m2.value,
-      m3: form.m3.value,
-      m4: form.m4.value,
-      m5: form.m5.value,
-      m6: form.m6.value,
-      m7: form.m7.value,
-      m8: form.m8.value,
-      m9: form.m9.value,
-      m10: form.m10.value,
-      m11: form.m11.value,
-      m12: form.m12.value,
-      m13: form.m13.value
-    }
+    kegiatan: form.kegiatan.value,
+    m1: form.m1.value,
+    m2: form.m2.value,
+    m3: form.m3.value,
+    m4: form.m4.value,
+    m5: form.m5.value,
+    m6: form.m6.value,
+    m7: form.m7.value,
+    m8: form.m8.value,
+    m9: form.m9.value,
+    m10: form.m10.value,
+    m11: form.m11.value,
+    m12: form.m12.value,
+    m13: form.m13.value
   };
 
   db.ref("evaluasi_materi").push(data, function (error) {
