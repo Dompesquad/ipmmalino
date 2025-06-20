@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sertifikat Peserta</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     .sertifikat {
-      background-image: url('sertifikat-bg.jpg'); /* Ganti jika nama file berbeda */
+      background-image: url('sertifikat-bg.jpg'); 
       background-size: cover;
       background-position: center;
       position: relative;
@@ -30,26 +30,85 @@
   <div class="sertifikat text-center">
     <h1 class="text-3xl font-extrabold text-yellow-700 uppercase mb-2 text-outline">SERTIFIKAT PESERTA</h1>
     <p class="text-lg mb-4">Diberikan kepada:</p>
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">[NAMA PESERTA]</h2>
+    <h2 id="namaPeserta" class="text-2xl font-bold text-gray-900 mb-4">[Memuat...]</h2>
     <p class="text-lg">Atas partisipasinya dalam kegiatan</p>
     <p class="italic text-xl font-semibold mb-2 text-yellow-700">Pengkaderan Kader Dasar Taruna Melati 1</p>
-    <p class="text-lg mb-2">Yang diselenggarakan pada tanggal <span class="font-medium">[Tanggal Mulai – Tanggal Selesai]</span></p>
-    <p class="text-lg mb-6">Bertempat di <span class="font-medium">[Tempat Kegiatan]</span></p>
+    <p class="text-lg mb-2">Yang diselenggarakan pada tanggal <span id="tanggalKegiatan" class="font-medium">...</span></p>
+    <p class="text-lg mb-6">Bertempat di <span id="tempatKegiatan" class="font-medium">...</span></p>
 
     <!-- Tanda tangan -->
     <div class="grid grid-cols-2 gap-8 mt-12 text-center">
       <div>
-        <p class="mb-16">Malino, [Tanggal Cetak]</p>
-        <p class="font-bold underline">[NAMA MASTER OF TRAINING]</p>
+        <p class="mb-16">Malino, <span id="tanggalCetak"></span></p>
+        <p id="namaMot" class="font-bold underline">...</p>
         <p class="text-sm italic">Master of Training</p>
       </div>
       <div>
         <p class="mb-16">Mengetahui,</p>
-        <p class="font-bold underline">[NAMA KETUA UMUM]</p>
+        <p id="namaKetum" class="font-bold underline">...</p>
         <p class="text-sm italic">Ketua Umum IPM Cabang Malino</p>
       </div>
     </div>
   </div>
 
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
+      authDomain: "ipm-kader-database.firebaseapp.com",
+      databaseURL: "https://ipm-kader-database-default-rtdb.firebaseio.com",
+      projectId: "ipm-kader-database",
+      storageBucket: "ipm-kader-database.appspot.com",
+      messagingSenderId: "199203359920",
+      appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get("id");
+
+    const nama = document.getElementById("namaPeserta");
+    const tanggalKegiatan = document.getElementById("tanggalKegiatan");
+    const tempatKegiatan = document.getElementById("tempatKegiatan");
+    const tanggalCetak = document.getElementById("tanggalCetak");
+    const namaMot = document.getElementById("namaMot");
+    const namaKetum = document.getElementById("namaKetum");
+
+    // Ganti dengan data kegiatan sebenarnya
+    const dataKegiatan = {
+      tanggal: "12–15 Juli 2025",
+      tempat: "Gedung Dakwah Muhammadiyah Malino",
+      mot: "Ahmad Syarif, S.Pd.I",
+      ketum: "Ainul Yaqin"
+    };
+
+    function tampilkanTanggalSekarang() {
+      const now = new Date();
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      return now.toLocaleDateString('id-ID', options);
+    }
+
+    if (id) {
+      db.ref("data_pendaftaran/" + id).once("value").then(snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          nama.textContent = data.nama;
+          tanggalKegiatan.textContent = dataKegiatan.tanggal;
+          tempatKegiatan.textContent = dataKegiatan.tempat;
+          tanggalCetak.textContent = tampilkanTanggalSekarang();
+          namaMot.textContent = dataKegiatan.mot;
+          namaKetum.textContent = dataKegiatan.ketum;
+        } else {
+          nama.textContent = "Data tidak ditemukan!";
+        }
+      });
+    } else {
+      nama.textContent = "ID peserta tidak ditemukan!";
+    }
+  </script>
 </body>
 </html>
