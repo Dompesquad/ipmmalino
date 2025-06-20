@@ -2,51 +2,84 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sertifikat Peserta</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    // Ambil data dari URL
+    function getParam(n) {
+      return new URLSearchParams(window.location.search).get(n) || "";
+    }
+
+    window.onload = () => {
+      document.getElementById("namaPeserta").textContent = getParam("nama");
+      document.getElementById("acara").textContent = getParam("acara");
+      document.getElementById("ttl").textContent = getParam("ttl");
+    }
+
+    function cetakPDF() {
+      window.print();
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #fdfdf0;
+    }
+    .sertifikat {
+      border: 4px double #000;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+    .judul {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: darkgreen;
+    }
+    .isi {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    .ttd {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    .ttd div {
+      width: 45%;
+      text-align: center;
+    }
+    @media print {
+      button { display: none; }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-10">
+<body>
+  <div class="sertifikat">
+    <div class="judul">SERTIFIKAT PESERTA</div>
+    <div class="isi">Diberikan kepada:</div>
+    <div class="isi" style="font-size: 22px; font-weight: bold;" id="namaPeserta">...</div>
+    <div class="isi">Tempat/Tanggal Lahir: <span id="ttl">...</span></div>
+    <div class="isi">Atas partisipasinya dalam kegiatan <span id="acara">...</span></div>
+    <div class="isi">Yang diselenggarakan oleh Ikatan Pelajar Muhammadiyah</div>
+    <div class="isi">Pada tanggal ................................ sampai ................................</div>
+    <div class="isi">Bertempat di ....................................................</div>
 
-  <div class="w-[900px] h-[650px] mx-auto border-4 border-yellow-600 bg-white p-10 rounded-lg shadow-lg relative">
-    
-    <!-- Header -->
-    <div class="text-center mb-6">
-      <h1 class="text-4xl font-bold text-yellow-700">SERTIFIKAT PESERTA</h1>
-      <p class="text-gray-700 text-sm italic mt-2">Nomor: 002/IPM-CBM/VI/2025</p>
-    </div>
-
-    <!-- Isi Sertifikat -->
-    <div class="text-center mt-8 px-10 leading-relaxed text-gray-800 text-lg">
-      <p>Diberikan kepada:</p>
-      <h2 class="text-2xl font-bold my-2 uppercase tracking-wide">[Nama Peserta]</h2>
-
-      <p>Atas partisipasi dalam kegiatan</p>
-      <p class="font-semibold mt-2">Pengkaderan Kader Dasar Taruna Melati 1</p>
-
-      <p class="mt-4">Yang dilaksanakan pada tanggal</p>
-      <p class="font-semibold">[Tanggal Mulai] – [Tanggal Selesai]</p>
-
-      <p class="mt-4">Bertempat di</p>
-      <p class="font-semibold">[Tempat Kegiatan]</p>
-    </div>
-
-    <!-- Tanda Tangan -->
-    <div class="grid grid-cols-2 gap-10 mt-20 px-10 text-sm text-gray-700">
-      <div class="text-center">
-        <p class="mb-16">Master of Training</p>
-        <p class="font-bold underline">[Nama MOT]</p>
+    <div class="ttd">
+      <div>
+        <p>Master of Training</p><br><br>
+        <p>______________________</p>
       </div>
-      <div class="text-center">
-        <p class="mb-16">Ketua Umum<br>Ikatan Pelajar Muhammadiyah Cabang Malino</p>
-        <p class="font-bold underline">[Nama Ketua Umum]</p>
+      <div>
+        <p>Ketua Umum PC IPM Malino</p><br><br>
+        <p>______________________</p>
       </div>
     </div>
-
-    <!-- Footer -->
-    <p class="absolute bottom-4 left-0 w-full text-center text-xs text-gray-500">© 2025 IPM Cabang Malino</p>
-
   </div>
-
+  <div style="text-align:center; margin-top:20px;">
+    <button onclick="cetakPDF()" style="padding:10px 20px; font-weight:bold; background:green; color:white;">🖨️ Cetak Sertifikat</button>
+  </div>
 </body>
 </html>
