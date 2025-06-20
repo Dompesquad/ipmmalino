@@ -3,62 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Form Evaluasi Kegiatan IPM</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Hasil Evaluasi Kegiatan</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <!-- Ekspor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body class="bg-yellow-50 min-h-screen p-4">
+<body class="bg-yellow-50 min-h-screen flex items-center justify-center p-6">
 
-  <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
-    <h1 class="text-2xl font-bold text-yellow-700 mb-4 text-center">Form Evaluasi Kegiatan</h1>
-    
-    <form id="evalForm" class="space-y-4">
-      <input name="nama" type="text" placeholder="Nama Peserta" required class="w-full border rounded px-4 py-2" />
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-5xl p-6">
+    <div class="mb-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-yellow-700">📊 Hasil Evaluasi Kegiatan</h1>
+      <a href="admin.html" class="text-blue-600 underline text-sm">← Kembali ke Admin Utama</a>
+    </div>
 
-      <select name="kegiatan" required class="w-full border rounded px-4 py-2">
-        <option value="">Pilih Kegiatan</option>
-        <option>PKTM 1</option>
-        <option>PKTM 2</option>
-        <option>TM Lanjutan</option>
-        <option>Lainnya</option>
-      </select>
+    <!-- Tabel -->
+    <div class="overflow-auto">
+      <table id="evalTable" class="table-auto w-full border text-sm">
+        <thead class="bg-yellow-100" id="evalHeader">
+          <!-- Kolom header akan diisi oleh JS -->
+        </thead>
+        <tbody id="evalBody"></tbody>
+      </table>
+    </div>
 
-      <div class="space-y-2">
-        <h2 class="text-lg font-semibold text-yellow-700">Penilaian Materi (1 - 5)</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <!-- Materi 1 sampai 13 -->
-          <div><label>Materi 1</label><input name="materi1" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 2</label><input name="materi2" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 3</label><input name="materi3" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 4</label><input name="materi4" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 5</label><input name="materi5" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 6</label><input name="materi6" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 7</label><input name="materi7" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 8</label><input name="materi8" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 9</label><input name="materi9" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 10</label><input name="materi10" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 11</label><input name="materi11" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 12</label><input name="materi12" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-          <div><label>Materi 13</label><input name="materi13" type="number" min="1" max="5" required class="w-full border rounded px-2 py-1" /></div>
-        </div>
-      </div>
+    <!-- Tombol -->
+    <div class="flex gap-2 mt-4 justify-center flex-wrap">
+      <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">📄 Export Excel</button>
+      <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">📄 Export PDF</button>
+    </div>
 
-      <h2 class="text-lg font-semibold text-yellow-700">Penilaian Umum (1 - 5)</h2>
-      <input name="fasilitator" type="number" min="1" max="5" placeholder="Fasilitator" required class="w-full border rounded px-4 py-2" />
-      <input name="panitia" type="number" min="1" max="5" placeholder="Panitia" required class="w-full border rounded px-4 py-2" />
-
-      <textarea name="saran" placeholder="Saran & Harapan" rows="3" class="w-full border rounded px-4 py-2"></textarea>
-
-      <button type="submit" class="w-full bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700 font-bold">Kirim Evaluasi</button>
-    </form>
-
-    <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Evaluasi berhasil dikirim!</p>
-
-    <footer class="text-center text-gray-600 text-sm mt-6">© 2025 <strong class="text-yellow-700">Ruang Pena</strong>. All rights reserved.</footer>
+    <!-- Footer -->
+    <footer class="text-center text-gray-600 text-sm mt-6">
+      © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
+    </footer>
   </div>
 
-  <!-- Firebase & JS -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+  <!-- Custom Script -->
   <script src="evaluasi.js"></script>
 </body>
 </html>
