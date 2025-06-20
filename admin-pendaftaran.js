@@ -66,3 +66,26 @@ function exportToPDF() {
     pdf.save("data_pendaftar_kegiatan.pdf");
   });
 }
+function generateCertificate() {
+  const selectedRow = dataBody.querySelector("tr"); // Pilih baris pertama (bisa dimodifikasi ke yang diklik)
+  if (!selectedRow) return alert("Tidak ada data!");
+
+  const nama = selectedRow.children[0].textContent;
+  const kegiatan = selectedRow.children[3].textContent;
+
+  document.getElementById("certNama").textContent = nama;
+  document.getElementById("certKegiatan").textContent = kegiatan;
+
+  const certDiv = document.getElementById("certificateTemplate");
+  certDiv.classList.remove("hidden");
+
+  html2canvas(certDiv).then(canvas => {
+    const pdf = new jspdf.jsPDF('l', 'pt', 'a4');
+    const img = canvas.toDataURL("image/png");
+    const width = pdf.internal.pageSize.getWidth();
+    const height = (canvas.height * width) / canvas.width;
+    pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
+    pdf.save(`sertifikat_${nama.replace(/\s+/g, "_")}.pdf`);
+    certDiv.classList.add("hidden");
+  });
+}
