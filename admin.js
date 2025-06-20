@@ -1,4 +1,4 @@
-// Firebase Config
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -11,13 +11,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Elemen
+// UI Elements
 const loginBox = document.getElementById("loginBox");
 const adminContent = document.getElementById("adminContent");
 const loginError = document.getElementById("loginError");
 const dataBody = document.getElementById("dataBody");
 
-// Login
+// Login Admin
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -30,11 +30,11 @@ function login() {
   }
 }
 
-// Ambil Data
+// Ambil dan tampilkan data kader
 function loadData() {
   dataBody.innerHTML = "";
   db.ref("data_kader").on("value", snapshot => {
-    dataBody.innerHTML = "";
+    dataBody.innerHTML = ""; // Bersihkan isi sebelumnya
     snapshot.forEach(child => {
       const d = child.val();
       const key = child.key;
@@ -51,34 +51,14 @@ function loadData() {
         <td class="border px-2 py-1">
           <button onclick="editRow('${key}')" class="text-blue-600">Edit</button> |
           <button onclick="deleteRow('${key}')" class="text-red-600">Hapus</button>
-        </td>`;
+        </td>
+      `;
       dataBody.appendChild(row);
     });
   });
 }
 
-// Filter
-function filterTable() {
-  const input = document.getElementById("searchInput");
-  const filter = input.value.toLowerCase();
-  const rows = dataBody.getElementsByTagName("tr");
-  for (let i = 0; i < rows.length; i++) {
-    const namaCell = rows[i].getElementsByTagName("td")[0];
-    if (namaCell) {
-      const txtValue = namaCell.textContent || namaCell.innerText;
-      rows[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
-    }
-  }
-}
-
-// Hapus
-function deleteRow(key) {
-  if (confirm("Yakin ingin menghapus data ini?")) {
-    db.ref("data_kader/" + key).remove();
-  }
-}
-
-// Edit
+// Fungsi edit data (menggunakan prompt)
 function editRow(key) {
   db.ref("data_kader/" + key).once("value").then(snapshot => {
     const d = snapshot.val();
@@ -90,7 +70,6 @@ function editRow(key) {
       tingkat_lanjutan1: prompt("Tingkat Lanjutan 1:", d.tingkat_lanjutan1) || d.tingkat_lanjutan1,
       tingkat_lanjutan2: prompt("Tingkat Lanjutan 2:", d.tingkat_lanjutan2) || d.tingkat_lanjutan2,
       jabatan: prompt("Jabatan:", d.jabatan) || d.jabatan,
-      tahun_menjabat: prompt("Tahun Menjabat:", d.tahun_menjabat) || d.tahun_menjabat,
       hp: prompt("No HP/WA:", d.hp) || d.hp,
       alamat: prompt("Alamat:", d.alamat) || d.alamat
     };
@@ -98,34 +77,21 @@ function editRow(key) {
   });
 }
 
-// Export Excel
-function exportToExcel() {
-  db.ref("data_kader").once("value", snapshot => {
-    const data = [];
-    snapshot.forEach(child => {
-      const d = child.val();
-      data.push({
-        Nama: d.nama,
-        Angkatan: d.angkatan,
-        "PKTM 1": d.tahun_pktm1,
-        "PKTM 2": d.tahun_pktm2,
-        "Lanjutan 1": d.tingkat_lanjutan1,
-        "Lanjutan 2": d.tingkat_lanjutan2,
-        Jabatan: d.jabatan,
-        "Tahun Menjabat": d.tahun_menjabat,
-        WA: d.hp,
-        Alamat: d.alamat
-      });
-    });
-
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Data Kader");
-    XLSX.writeFile(wb, "backup_data_kader.xlsx");
-  });
+// Fungsi hapus data
+function deleteRow(key) {
+  if (confirm("Yakin ingin menghapus data ini?")) {
+    db.ref("data_kader/" + key).remove();
+  }
 }
 
-// Export PDF
+// Export ke Excel
+function exportToExcel() {
+  const table = document.getElementById("dataTable");
+  const wb = XLSX.utils.table_to_book(table, { sheet: "Data Kader" });
+  XLSX.writeFile(wb, "data_kader_ipm.xlsx");
+}
+
+// Export ke PDF
 function exportToPDF() {
   const table = document.getElementById("dataTable");
   html2canvas(table).then(canvas => {
@@ -136,26 +102,4 @@ function exportToPDF() {
     pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
     pdf.save("data_kader_ipm.pdf");
   });
-}
-
-// Export JSON
-function exportToJSON() {
-  db.ref("data_kader").once("value", snapshot => {
-    const data = snapshot.val();
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "backup_data_kader.json";
-    a.click();
-
-    URL.revokeObjectURL(url);
-  });
-}
-
-// Cetak Tabel
-function printTable() {
-  window.print();
 }
