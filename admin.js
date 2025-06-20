@@ -34,7 +34,7 @@ function login() {
 function loadData() {
   dataBody.innerHTML = "";
   db.ref("data_kader").on("value", snapshot => {
-    dataBody.innerHTML = ""; // Bersihkan isi sebelumnya
+    dataBody.innerHTML = "";
     snapshot.forEach(child => {
       const d = child.val();
       const key = child.key;
@@ -58,7 +58,7 @@ function loadData() {
   });
 }
 
-// Fungsi edit data (menggunakan prompt)
+// Edit data kader
 function editRow(key) {
   db.ref("data_kader/" + key).once("value").then(snapshot => {
     const d = snapshot.val();
@@ -77,21 +77,21 @@ function editRow(key) {
   });
 }
 
-// Fungsi hapus data
+// Hapus data kader
 function deleteRow(key) {
   if (confirm("Yakin ingin menghapus data ini?")) {
     db.ref("data_kader/" + key).remove();
   }
 }
 
-// Export ke Excel
+// Export Excel
 function exportToExcel() {
   const table = document.getElementById("dataTable");
   const wb = XLSX.utils.table_to_book(table, { sheet: "Data Kader" });
   XLSX.writeFile(wb, "data_kader_ipm.xlsx");
 }
 
-// Export ke PDF
+// Export PDF
 function exportToPDF() {
   const table = document.getElementById("dataTable");
   html2canvas(table).then(canvas => {
@@ -101,5 +101,22 @@ function exportToPDF() {
     const height = (canvas.height * width) / canvas.width;
     pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
     pdf.save("data_kader_ipm.pdf");
+  });
+}
+
+// Backup ke JSON
+function backupToJSON() {
+  db.ref("data_kader").once("value").then(snapshot => {
+    const data = snapshot.val();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "data_kader_ipm.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   });
 }
