@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Evaluasi Kegiatan</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-yellow-50 min-h-screen p-4">
+
+  <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold text-yellow-700">📊 Hasil Evaluasi Kegiatan</h1>
+      <a href="admin.html" class="text-sm text-blue-600 underline">← Kembali ke Admin Utama</a>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table id="evalTable" class="table-auto w-full text-sm border">
+        <thead class="bg-yellow-100">
+          <tr>
+            <th class="border px-2 py-1">Nama</th>
+            <th class="border px-2 py-1">Kegiatan</th>
+            <!-- Materi 1-13 -->
+            ${[...Array(13)].map((_, i) => `<th class="border px-2 py-1">M${i+1}</th>`).join("")}
+            <th class="border px-2 py-1">Fasilitator</th>
+            <th class="border px-2 py-1">Panitia</th>
+            <th class="border px-2 py-1">Saran</th>
+          </tr>
+        </thead>
+        <tbody id="evalBody"></tbody>
+      </table>
+    </div>
+
+    <div class="flex gap-2 justify-end mt-4">
+      <button onclick="exportExcel()" class="bg-green-600 text-white px-4 py-2 rounded">📄 Export Excel</button>
+      <button onclick="exportPDF()" class="bg-red-600 text-white px-4 py-2 rounded">📄 Export PDF</button>
+    </div>
+
+    <footer class="text-center text-gray-600 text-sm mt-6">
+      © 2025 <strong class="text-yellow-700">Ruang Pena</strong>. All rights reserved.
+    </footer>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+  <!-- Ekspor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
+      authDomain: "ipm-kader-database.firebaseapp.com",
+      databaseURL: "https://ipm-kader-database-default-rtdb.firebaseio.com",
+      projectId: "ipm-kader-database",
+      storageBucket: "ipm-kader-database.appspot.com",
+      messagingSenderId: "199203359920",
+      appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const body = document.getElementById("evalBody");
+
+    db.ref("evaluasi_kegiatan").once("value", snapshot => {
+      snapshot.forEach(child => {
+        const d = child.val();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="border px-2 py-1">${d.nama}</td>
+          <td class="border px-2 py-1">${d.kegiatan}</td>
+          ${[...Array(13)].map((_, i) => `<td class="border px-2 py-1">${d["materi" + (i + 1)] || "-"}</td>`).join("")}
+          <td class="border px-2 py-1">${d.fasilitator}</td>
+          <td class="border px-2 py-1">${d.panitia}</td>
+          <td class="border px-2 py-1">${d.saran || "-"}</td>
+        `;
+        body.appendChild(tr);
+      });
+    });
+
+    function exportExcel() {
+      const table = document.getElementById("evalTable");
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Evaluasi" });
+      XLSX.writeFile(wb, "hasil_evaluasi.xlsx");
+    }
+
+    function exportPDF() {
+      const table = document.getElementById("evalTable");
+      html2canvas(table).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jspdf.jsPDF('l', 'pt', 'a4');
+        const w = pdf.internal.pageSize.getWidth();
+        const h = (canvas.height * w) / canvas.width;
+        pdf.addImage(imgData, 'PNG', 10, 10, w - 20, h);
+        pdf.save("hasil_evaluasi.pdf");
+      });
+    }
+  </script>
+</body>
+</html>
