@@ -16,71 +16,80 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-<body class="p-4 bg-yellow-50 min-h-screen">
+<body class="flex flex-col min-h-screen bg-yellow-50">
 
-  <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow">
-    
-    <!-- Login Section -->
-    <div id="loginBox" class="text-center">
-      <h2 class="text-xl font-bold mb-4 text-yellow-700">Login Admin IPM</h2>
-      <input id="username" type="text" placeholder="Username" />
-      <input id="password" type="password" placeholder="Password" />
-      <button onclick="login()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">Login</button>
-      <p id="loginError" class="text-red-600 mt-2 hidden">❌ Username atau password salah!</p>
-    </div>
+  <!-- Konten Utama -->
+  <main class="flex-grow p-4">
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow">
 
-    <!-- Admin Content -->
-    <div id="adminContent" class="hidden">
+      <!-- Login Section -->
+      <div id="loginBox" class="text-center">
+        <h2 class="text-xl font-bold mb-4 text-yellow-700">Login Admin IPM</h2>
+        <input id="username" type="text" placeholder="Username" class="border p-2 rounded w-full max-w-xs mb-2" />
+        <input id="password" type="password" placeholder="Password" class="border p-2 rounded w-full max-w-xs mb-4" />
+        <button onclick="login()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">Login</button>
+        <p id="loginError" class="text-red-600 mt-2 hidden">❌ Username atau password salah!</p>
+      </div>
 
-      <div class="admin-header mb-4">
-        <h1 class="text-2xl font-bold text-yellow-700">📋 Data Kader IPM</h1>
-        <div class="flex gap-2 no-print">
-          <a href="admin-pendaftaran.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">🧾 Lihat Pendaftaran</a>
-          <a href="statistik.html" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">📊 Statistik</a>
+      <!-- Admin Content -->
+      <div id="adminContent" class="hidden">
+
+        <div class="admin-header mb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+          <h1 class="text-2xl font-bold text-yellow-700">📋 Data Kader IPM</h1>
+          <div class="flex gap-2 no-print">
+            <a href="admin-pendaftaran.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">🧾 Lihat Pendaftaran</a>
+            <a href="statistik.html" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">📊 Statistik</a>
+          </div>
         </div>
-      </div>
 
-      <!-- Search -->
-      <div class="mb-4 no-print">
-        <input type="text" id="searchInput" placeholder="🔍 Cari nama / angkatan / tahun PKTM 1" oninput="searchData()" />
-      </div>
+        <!-- Search -->
+        <div class="mb-4 no-print">
+          <input type="text" id="searchInput" placeholder="🔍 Cari nama / angkatan / tahun PKTM 1"
+            oninput="searchData()" class="border px-4 py-2 rounded w-full max-w-md" />
+        </div>
 
-      <!-- Table -->
-      <div class="overflow-x-auto">
-        <table id="dataTable">
-          <thead>
-            <tr>
-              <th>Nama</th>
-              <th>Angkatan</th>
-              <th>PKTM 1</th>
-              <th>PKTM 2</th>
-              <th>Lanjutan</th>
-              <th>Jabatan</th>
-              <th>WA</th>
-              <th>Alamat</th>
-              <th class="no-print">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="dataBody"></tbody>
-        </table>
-      </div>
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table id="dataTable" class="table-auto w-full border text-sm">
+            <thead class="bg-yellow-100">
+              <tr>
+                <th class="border px-2 py-1">Nama</th>
+                <th class="border px-2 py-1">Angkatan</th>
+                <th class="border px-2 py-1">PKTM 1</th>
+                <th class="border px-2 py-1">PKTM 2</th>
+                <th class="border px-2 py-1">Lanjutan</th>
+                <th class="border px-2 py-1">Jabatan</th>
+                <th class="border px-2 py-1">WA</th>
+                <th class="border px-2 py-1">Alamat</th>
+                <th class="border px-2 py-1 no-print">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="dataBody"></tbody>
+          </table>
+        </div>
 
-      <!-- Tombol Ekspor -->
-      <div class="flex flex-wrap gap-2 mt-4 justify-end no-print">
-        <button onclick="exportToExcel()" class="export-btn">📄 Export Excel</button>
-        <button onclick="exportToPDF()" class="bg-red-600 text-white font-bold px-4 py-2 rounded">📄 Export PDF</button>
-        <button onclick="backupJSON()" class="bg-gray-800 text-white font-bold px-4 py-2 rounded">🗂️ Backup JSON</button>
-        <button onclick="printData()" class="print-btn">🖨️ Cetak</button>
-      </div>
+        <!-- Tombol Ekspor -->
+        <div class="flex flex-wrap gap-2 mt-4 justify-end no-print">
+          <button onclick="exportToExcel()" class="bg-green-600 text-white font-bold px-4 py-2 rounded">📄 Export Excel</button>
+          <button onclick="exportToPDF()" class="bg-red-600 text-white font-bold px-4 py-2 rounded">📄 Export PDF</button>
+          <button onclick="backupJSON()" class="bg-gray-800 text-white font-bold px-4 py-2 rounded">🗂️ Backup JSON</button>
+          <button onclick="printData()" class="bg-yellow-700 text-white font-bold px-4 py-2 rounded">🖨️ Cetak</button>
+        </div>
 
+      </div>
     </div>
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-600 text-sm py-4">
+    © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
+  </footer>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
   <!-- JS -->
-  <script src="admin.js"></script>
+  <script src="admin.js?v=2"></script>
 </body>
 </html>
