@@ -1,4 +1,4 @@
-// Firebase
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -8,19 +8,16 @@ const firebaseConfig = {
   messagingSenderId: "199203359920",
   appId: "1:199203359920:web:fd1b4d28069eb97d317f75"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Element
 const loginBox = document.getElementById("loginBox");
 const adminContent = document.getElementById("adminContent");
 const loginError = document.getElementById("loginError");
 const dataBody = document.getElementById("dataBody");
-const searchInput = document.getElementById("searchInput");
+let dataList = []; // Untuk backup JSON dan pencarian
 
-let dataList = [];
-
-// Login manual
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -33,78 +30,57 @@ function login() {
   }
 }
 
-// Load data
 function loadData() {
   db.ref("data_kader").on("value", snapshot => {
-    dataList = [];
+    dataBody.innerHTML = "";
+    dataList = []; // Reset list
     snapshot.forEach(child => {
-      dataList.push({ key: child.key, ...child.val() });
+      const d = child.val();
+      const key = child.key;
+      dataList.push({ ...d, key }); // Simpan untuk backup dan pencarian
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="border px-2 py-1">${d.nama}</td>
+        <td class="border px-2 py-1">${d.angkatan}</td>
+        <td class="border px-2 py-1">${d.tahun_pktm1}</td>
+        <td class="border px-2 py-1">${d.tahun_pktm2 || ""}</td>
+        <td class="border px-2 py-1">${(d.tingkat_lanjutan1 || "") + " " + (d.tingkat_lanjutan2 || "")}</td>
+        <td class="border px-2 py-1">${d.jabatan || ""}</td>
+        <td class="border px-2 py-1">${d.hp}</td>
+        <td class="border px-2 py-1">${d.alamat}</td>
+        <td class="border px-2 py-1 text-center no-print">
+          <button onclick="editRow('${key}')" class="text-blue-600">Edit</button> |
+          <button onclick="deleteRow('${key}')" class="text-red-600">Hapus</button>
+        </td>`;
+      dataBody.appendChild(row);
     });
-    renderTable(dataList);
   });
 }
 
-// Tampilkan tabel
-function renderTable(data) {
-  dataBody.innerHTML = "";
-  data.forEach(d => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td class="border px-2 py-1">${d.nama}</td>
-      <td class="border px-2 py-1">${d.angkatan}</td>
-      <td class="border px-2 py-1">${d.tahun_pktm1}</td>
-      <td class="border px-2 py-1">${d.tahun_pktm2 || ''}</td>
-      <td class="border px-2 py-1">${(d.tingkat_lanjutan1 || '') + ' ' + (d.tingkat_lanjutan2 || '')}</td>
-      <td class="border px-2 py-1">${d.jabatan || ''}</td>
-      <td class="border px-2 py-1">${d.hp}</td>
-      <td class="border px-2 py-1">${d.alamat}</td>
-      <td class="border px-2 py-1 text-center">
-        <button onclick="editRow('${d.key}')" class="text-blue-600">Edit</button> |
-        <button onclick="deleteRow('${d.key}')" class="text-red-600">Hapus</button>
-      </td>`;
-    dataBody.appendChild(row);
-  });
-}
-
-// Edit
-function editRow(key) {
-  const d = dataList.find(i => i.key === key);
-  if (!d) return;
-
-  const updated = {
-    nama: prompt("Nama:", d.nama) || d.nama,
-    angkatan: prompt("Angkatan:", d.angkatan) || d.angkatan,
-    tahun_pktm1: prompt("PKTM 1:", d.tahun_pktm1) || d.tahun_pktm1,
-    tahun_pktm2: prompt("PKTM 2:", d.tahun_pktm2) || d.tahun_pktm2,
-    tingkat_lanjutan1: prompt("Lanjutan 1:", d.tingkat_lanjutan1) || d.tingkat_lanjutan1,
-    tingkat_lanjutan2: prompt("Lanjutan 2:", d.tingkat_lanjutan2) || d.tingkat_lanjutan2,
-    jabatan: prompt("Jabatan:", d.jabatan) || d.jabatan,
-    hp: prompt("HP:", d.hp) || d.hp,
-    alamat: prompt("Alamat:", d.alamat) || d.alamat
-  };
-
-  db.ref("data_kader/" + key).update(updated);
-}
-
-// Delete
 function deleteRow(key) {
-  if (confirm("Yakin hapus data ini?")) {
+  if (confirm("Yakin ingin menghapus data ini?")) {
     db.ref("data_kader/" + key).remove();
   }
 }
 
-// Search
-function searchData() {
-  const query = searchInput.value.toLowerCase();
-  const filtered = dataList.filter(d =>
-    d.nama.toLowerCase().includes(query) ||
-    d.angkatan.toLowerCase().includes(query) ||
-    d.tahun_pktm1.toLowerCase().includes(query)
-  );
-  renderTable(filtered);
+function editRow(key) {
+  db.ref("data_kader/" + key).once("value").then(snapshot => {
+    const d = snapshot.val();
+    const updated = {
+      nama: prompt("Nama Lengkap:", d.nama) || d.nama,
+      angkatan: prompt("Angkatan:", d.angkatan) || d.angkatan,
+      tahun_pktm1: prompt("PKTM 1:", d.tahun_pktm1) || d.tahun_pktm1,
+      tahun_pktm2: prompt("PKTM 2:", d.tahun_pktm2) || d.tahun_pktm2,
+      tingkat_lanjutan1: prompt("Tingkat Lanjutan 1:", d.tingkat_lanjutan1) || d.tingkat_lanjutan1,
+      tingkat_lanjutan2: prompt("Tingkat Lanjutan 2:", d.tingkat_lanjutan2) || d.tingkat_lanjutan2,
+      jabatan: prompt("Jabatan:", d.jabatan) || d.jabatan,
+      hp: prompt("No HP/WA:", d.hp) || d.hp,
+      alamat: prompt("Alamat:", d.alamat) || d.alamat
+    };
+    db.ref("data_kader/" + key).update(updated);
+  });
 }
 
-// Export
 function exportToExcel() {
   const table = document.getElementById("dataTable");
   const wb = XLSX.utils.table_to_book(table, { sheet: "Data Kader" });
@@ -120,5 +96,45 @@ function exportToPDF() {
     const height = (canvas.height * width) / canvas.width;
     pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
     pdf.save("data_kader_ipm.pdf");
+  });
+}
+
+function backupJSON() {
+  const blob = new Blob([JSON.stringify(dataList, null, 2)], { type: 'application/json' });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "data_kader_ipm.json";
+  a.click();
+}
+
+function printData() {
+  window.print();
+}
+
+function searchData() {
+  const keyword = document.getElementById("searchInput").value.toLowerCase();
+  const filtered = dataList.filter(d =>
+    d.nama.toLowerCase().includes(keyword) ||
+    d.angkatan.toLowerCase().includes(keyword) ||
+    d.tahun_pktm1.toLowerCase().includes(keyword)
+  );
+
+  dataBody.innerHTML = "";
+  filtered.forEach(d => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td class="border px-2 py-1">${d.nama}</td>
+      <td class="border px-2 py-1">${d.angkatan}</td>
+      <td class="border px-2 py-1">${d.tahun_pktm1}</td>
+      <td class="border px-2 py-1">${d.tahun_pktm2 || ""}</td>
+      <td class="border px-2 py-1">${(d.tingkat_lanjutan1 || "") + " " + (d.tingkat_lanjutan2 || "")}</td>
+      <td class="border px-2 py-1">${d.jabatan || ""}</td>
+      <td class="border px-2 py-1">${d.hp}</td>
+      <td class="border px-2 py-1">${d.alamat}</td>
+      <td class="border px-2 py-1 text-center no-print">
+        <button onclick="editRow('${d.key}')" class="text-blue-600">Edit</button> |
+        <button onclick="deleteRow('${d.key}')" class="text-red-600">Hapus</button>
+      </td>`;
+    dataBody.appendChild(row);
   });
 }
