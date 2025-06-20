@@ -11,46 +11,46 @@
   <!-- Custom Style -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 bg-center bg-cover" style="background-image: url('logo-ipmv2.jpeg');">
+<body class="min-h-screen flex flex-col bg-center bg-cover" style="background-image: url('logo-ipmv2.jpeg');">
 
-  <div class="backdrop-blur-md bg-white bg-opacity-80 rounded-xl shadow-xl w-full max-w-xl">
+  <!-- Konten Utama -->
+  <main class="flex-grow flex items-center justify-center p-4">
+    <div class="backdrop-blur-md bg-white bg-opacity-80 rounded-xl shadow-xl w-full max-w-xl">
+      <!-- Header dengan Logo dan Judul -->
+      <div class="text-center border-b border-gray-300 pb-4 pt-4">
+        <img src="logo-ipm.jpeg" alt="Logo IPM" class="mx-auto h-20 mb-2" />
+        <h1 class="text-2xl font-bold text-yellow-700">Form Database Kader IPM</h1>
+        <p class="text-sm text-gray-600">Menghimpun Data Kader semua Angkatan</p>
+      </div>
 
-    <!-- Header dengan Logo dan Judul -->
-    <div class="text-center border-b border-gray-300 pb-4 pt-4">
-      <img src="logo-ipm.jpeg" alt="Logo IPM" class="mx-auto h-20 mb-2" />
-      <h1 class="text-2xl font-bold text-yellow-700">Form Database Kader IPM</h1>
-      <p class="text-sm text-gray-600">Menghimpun Data Kader semua Angkatan</p>
+      <!-- Form Input -->
+      <form id="kaderForm" class="space-y-4 p-6">
+        <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full border rounded px-4 py-2" />
+        <input type="text" name="angkatan" placeholder="Angkatan" required class="w-full border rounded px-4 py-2" />
+        <input type="text" name="tahun_pktm1" placeholder="Tahun PKTM 1" required class="w-full border rounded px-4 py-2" />
+        <input type="text" name="tahun_pktm2" placeholder="Tahun PKTM 2 (opsional)" class="w-full border rounded px-4 py-2" />
+        <input type="text" name="tingkat_lanjutan1" placeholder="Tingkat Lanjutan 1 (opsional)" class="w-full border rounded px-4 py-2" />
+        <input type="text" name="tingkat_lanjutan2" placeholder="Tingkat Lanjutan 2 (opsional)" class="w-full border rounded px-4 py-2" />
+        <input type="text" name="jabatan" placeholder="Jabatan Terakhir di Cabang (opsional)" class="w-full border rounded px-4 py-2" />
+        <input type="text" name="tahun_menjabat" placeholder="Tahun Menjabat (opsional)" class="w-full border rounded px-4 py-2" />
+        <input type="text" name="hp" placeholder="No. HP / WA" required class="w-full border rounded px-4 py-2" />
+        <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
+
+        <button type="submit" class="text-white bg-yellow-600 hover:bg-yellow-700 font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
+      </form>
+
+      <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Data berhasil dikirim!</p>
     </div>
+  </main>
 
-    <!-- Form Input -->
-    <form id="kaderForm" class="space-y-4 p-6">
-      <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full border rounded px-4 py-2" />
-      <input type="text" name="angkatan" placeholder="Angkatan" required class="w-full border rounded px-4 py-2" />
-      <input type="text" name="tahun_pktm1" placeholder="Tahun PKTM 1" required class="w-full border rounded px-4 py-2" />
-      <input type="text" name="tahun_pktm2" placeholder="Tahun PKTM 2 (opsional)" class="w-full border rounded px-4 py-2" />
-      <input type="text" name="tingkat_lanjutan1" placeholder="Tingkat Lanjutan 1 (opsional)" class="w-full border rounded px-4 py-2" />
-      <input type="text" name="tingkat_lanjutan2" placeholder="Tingkat Lanjutan 2 (opsional)" class="w-full border rounded px-4 py-2" />
-      <input type="text" name="jabatan" placeholder="Jabatan Terakhir di Cabang (opsional)" class="w-full border rounded px-4 py-2" />
-      <input type="text" name="tahun_menjabat" placeholder="Tahun Menjabat (opsional)" class="w-full border rounded px-4 py-2" />
-      <input type="text" name="hp" placeholder="No. HP / WA" required class="w-full border rounded px-4 py-2" />
-      <textarea name="alamat" placeholder="Alamat Lengkap" rows="3" required class="w-full border rounded px-4 py-2"></textarea>
-
-      <button type="submit" class="text-white bg-yellow-600 hover:bg-yellow-700 font-bold px-6 py-2 rounded-lg w-full">Kirim Data</button>
-    </form>
-
-    <p id="suksesMsg" class="text-green-600 text-center mt-4 hidden">✅ Data berhasil dikirim!</p>
-  </div>
+  <!-- Footer -->
+  <footer class="text-center text-gray-600 text-sm py-4">
+    © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
+  </footer>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
-  <!-- JS -->
   <script src="app.js?v=1"></script>
-
-  <!-- Sticky Footer -->
-  <footer class="text-center text-gray-600 text-sm mt-8 absolute bottom-2 left-0 w-full">
-  © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
-</footer>
 </body>
 </html>
