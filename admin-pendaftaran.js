@@ -43,11 +43,15 @@ function loadData() {
         <td class="border px-2 py-1">${d.tujuan}</td>
         <td class="border px-2 py-1">${d.nama_ortu}</td>
         <td class="border px-2 py-1">${d.hp}</td>
+        <td class="border px-2 py-1 text-center">
+          <button onclick="openCertificateModal('${d.nama}', '${d.acara}')" class="bg-yellow-600 text-white px-2 py-1 rounded text-xs">🎓 Sertifikat</button>
+        </td>
       `;
       dataBody.appendChild(row);
     });
   });
 }
+
 
 function exportToExcel() {
   const table = document.getElementById("dataTable");
