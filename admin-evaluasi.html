@@ -1,49 +1,73 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Hasil Evaluasi</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Evaluasi Kegiatan</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-yellow-50 min-h-screen p-4">
 
-  <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow">
+  <!-- Login Admin -->
+  <div id="loginBox" class="max-w-md mx-auto text-center bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold text-yellow-700 mb-4">Login Admin</h2>
+    <input id="username" type="text" placeholder="Username" class="border p-2 w-full mb-2 rounded" />
+    <input id="password" type="password" placeholder="Password" class="border p-2 w-full mb-4 rounded" />
+    <button onclick="login()" class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Login</button>
+    <p id="loginError" class="text-red-600 mt-2 hidden">❌ Username atau password salah!</p>
+  </div>
+
+  <!-- Konten Evaluasi -->
+  <div id="adminContent" class="hidden bg-white p-6 rounded-xl shadow max-w-7xl mx-auto">
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold text-yellow-700">📋 Hasil Evaluasi Peserta</h1>
+      <h1 class="text-2xl font-bold text-yellow-700">📊 Hasil Evaluasi Kegiatan</h1>
       <a href="admin.html" class="text-blue-600 underline text-sm">← Kembali ke Admin</a>
     </div>
 
     <div class="overflow-x-auto">
-      <table class="table-auto w-full border text-sm" id="evaluasiTable">
+      <table id="evaluasiTable" class="w-full text-sm border">
         <thead class="bg-yellow-100">
           <tr>
             <th class="border px-2 py-1">Nama</th>
-            <th class="border px-2 py-1">Asal</th>
-            <th class="border px-2 py-1">Materi 1</th>
-            <th class="border px-2 py-1">Materi 2</th>
-            <th class="border px-2 py-1">Materi 3</th>
-            <th class="border px-2 py-1">Materi 4</th>
-            <th class="border px-2 py-1">Materi 5</th>
-            <th class="border px-2 py-1">Materi 6</th>
-            <th class="border px-2 py-1">Materi 7</th>
-            <th class="border px-2 py-1">Materi 8</th>
-            <th class="border px-2 py-1">Materi 9</th>
-            <th class="border px-2 py-1">Materi 10</th>
-            <th class="border px-2 py-1">Materi 11</th>
-            <th class="border px-2 py-1">Materi 12</th>
-            <th class="border px-2 py-1">Materi 13</th>
+            <th class="border px-2 py-1">Kegiatan</th>
+            <th class="border px-2 py-1">M1</th>
+            <th class="border px-2 py-1">M2</th>
+            <th class="border px-2 py-1">M3</th>
+            <th class="border px-2 py-1">M4</th>
+            <th class="border px-2 py-1">M5</th>
+            <th class="border px-2 py-1">M6</th>
+            <th class="border px-2 py-1">M7</th>
+            <th class="border px-2 py-1">M8</th>
+            <th class="border px-2 py-1">M9</th>
+            <th class="border px-2 py-1">M10</th>
+            <th class="border px-2 py-1">M11</th>
+            <th class="border px-2 py-1">M12</th>
+            <th class="border px-2 py-1">M13</th>
           </tr>
         </thead>
-        <tbody id="evaluasiBody"></tbody>
+        <tbody id="dataBody"></tbody>
       </table>
+    </div>
+
+    <div class="mt-4 text-right">
+      <button onclick="exportToPDF()" class="bg-red-600 text-white font-bold px-4 py-2 rounded">📄 Export PDF</button>
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- Footer -->
+  <footer class="text-center text-gray-600 text-sm mt-8">
+    © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
+  </footer>
+
+  <!-- Library & Firebase -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
+  <!-- Script -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
@@ -57,34 +81,62 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const tbody = document.getElementById("evaluasiBody");
+    const loginBox = document.getElementById("loginBox");
+    const adminContent = document.getElementById("adminContent");
+    const loginError = document.getElementById("loginError");
+    const dataBody = document.getElementById("dataBody");
 
-    db.ref("evaluasi_materi").on("value", (snapshot) => {
-      tbody.innerHTML = "";
-      snapshot.forEach(child => {
-        const d = child.val();
-        const m = d.materi || {};
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td class="border px-2 py-1">${d.nama}</td>
-          <td class="border px-2 py-1">${d.asal}</td>
-          <td class="border px-2 py-1">${m.m1}</td>
-          <td class="border px-2 py-1">${m.m2}</td>
-          <td class="border px-2 py-1">${m.m3}</td>
-          <td class="border px-2 py-1">${m.m4}</td>
-          <td class="border px-2 py-1">${m.m5}</td>
-          <td class="border px-2 py-1">${m.m6}</td>
-          <td class="border px-2 py-1">${m.m7}</td>
-          <td class="border px-2 py-1">${m.m8}</td>
-          <td class="border px-2 py-1">${m.m9}</td>
-          <td class="border px-2 py-1">${m.m10}</td>
-          <td class="border px-2 py-1">${m.m11}</td>
-          <td class="border px-2 py-1">${m.m12}</td>
-          <td class="border px-2 py-1">${m.m13}</td>
-        `;
-        tbody.appendChild(row);
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (user === "admin" && pass === "ipm123") {
+        loginBox.classList.add("hidden");
+        adminContent.classList.remove("hidden");
+        loadData();
+      } else {
+        loginError.classList.remove("hidden");
+      }
+    }
+
+    function loadData() {
+      db.ref("evaluasi_materi").once("value", snapshot => {
+        dataBody.innerHTML = "";
+        snapshot.forEach(child => {
+          const d = child.val();
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td class="border px-2 py-1">${d.nama}</td>
+            <td class="border px-2 py-1">${d.kegiatan}</td>
+            <td class="border px-2 py-1">${d.m1 || ""}</td>
+            <td class="border px-2 py-1">${d.m2 || ""}</td>
+            <td class="border px-2 py-1">${d.m3 || ""}</td>
+            <td class="border px-2 py-1">${d.m4 || ""}</td>
+            <td class="border px-2 py-1">${d.m5 || ""}</td>
+            <td class="border px-2 py-1">${d.m6 || ""}</td>
+            <td class="border px-2 py-1">${d.m7 || ""}</td>
+            <td class="border px-2 py-1">${d.m8 || ""}</td>
+            <td class="border px-2 py-1">${d.m9 || ""}</td>
+            <td class="border px-2 py-1">${d.m10 || ""}</td>
+            <td class="border px-2 py-1">${d.m11 || ""}</td>
+            <td class="border px-2 py-1">${d.m12 || ""}</td>
+            <td class="border px-2 py-1">${d.m13 || ""}</td>
+          `;
+          dataBody.appendChild(row);
+        });
       });
-    });
+    }
+
+    function exportToPDF() {
+      const table = document.getElementById("evaluasiTable");
+      html2canvas(table).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jspdf.jsPDF('l', 'pt', 'a4');
+        const width = pdf.internal.pageSize.getWidth();
+        const height = canvas.height * width / canvas.width;
+        pdf.addImage(imgData, 'PNG', 10, 10, width - 20, height);
+        pdf.save("hasil_evaluasi_kegiatan.pdf");
+      });
+    }
   </script>
 </body>
 </html>
