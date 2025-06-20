@@ -64,62 +64,61 @@
     <form id="formEvaluasi" class="space-y-3">
       <input type="text" name="nama" placeholder="Nama Lengkap" required class="border rounded px-4 py-2 w-full"/>
       <input type="text" name="kegiatan" placeholder="Nama Kegiatan" required class="border rounded px-4 py-2 w-full"/>
-      <div class="grid grid-cols-2 gap-2">
-  <select name="m1" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 1: Ke-IPM-an</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m2" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 2: Kepemimpinan</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m3" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 3: Keorganisasian</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m4" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 4</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m5" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 5</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m6" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 6</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m7" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 7</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m8" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 8</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m9" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 9</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m10" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 10</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m11" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 11</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m12" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 12</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
-  <select name="m13" required class="border rounded px-4 py-2 w-full">
-    <option value="">Materi 13</option>
-    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
-  </select>
+      <div class="grid grid-cols-1 gap-4">
+  <div>
+    <label for="m1" class="block font-semibold">Materi 1: Ke-IPM-an</label>
+    <textarea name="m1" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m2" class="block font-semibold">Materi 2: Kepemimpinan</label>
+    <textarea name="m2" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m3" class="block font-semibold">Materi 3: Keorganisasian</label>
+    <textarea name="m3" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m4" class="block font-semibold">Materi 4</label>
+    <textarea name="m4" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m5" class="block font-semibold">Materi 5</label>
+    <textarea name="m5" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m6" class="block font-semibold">Materi 6</label>
+    <textarea name="m6" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m7" class="block font-semibold">Materi 7</label>
+    <textarea name="m7" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m8" class="block font-semibold">Materi 8</label>
+    <textarea name="m8" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m9" class="block font-semibold">Materi 9</label>
+    <textarea name="m9" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m10" class="block font-semibold">Materi 10</label>
+    <textarea name="m10" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m11" class="block font-semibold">Materi 11</label>
+    <textarea name="m11" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m12" class="block font-semibold">Materi 12</label>
+    <textarea name="m12" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
+  <div>
+    <label for="m13" class="block font-semibold">Materi 13</label>
+    <textarea name="m13" rows="2" required class="border rounded w-full p-2" placeholder="Apa yang kamu dapatkan dari materi ini?"></textarea>
+  </div>
 </div>
-
-
+      
   <footer class="text-center text-gray-600 text-sm mt-8">
     © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
   </footer>
