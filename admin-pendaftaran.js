@@ -93,3 +93,39 @@ function generateCertificate() {
     certDiv.classList.add("hidden");
   });
 }
+let selectedNama = "", selectedAcara = "";
+
+function openCertificateModal(nama, acara) {
+  selectedNama = nama;
+  selectedAcara = acara;
+  document.getElementById("certNamaPeserta").value = nama;
+  document.getElementById("certKegiatan").value = acara;
+  document.getElementById("certModal").classList.remove("hidden");
+}
+
+function closeCertModal() {
+  document.getElementById("certModal").classList.add("hidden");
+}
+
+function generateCertificate() {
+  document.getElementById("certPreviewNama").textContent = selectedNama;
+  document.getElementById("certPreviewKegiatan").textContent = selectedAcara;
+  document.getElementById("certPreviewMot").textContent = document.getElementById("certMot").value;
+  document.getElementById("certPreviewKetum").textContent = document.getElementById("certKetum").value;
+  document.getElementById("certPreviewSekum").textContent = document.getElementById("certSekum").value;
+  document.getElementById("certPreviewTtd").textContent = document.getElementById("certTtd").value;
+
+  const certDiv = document.getElementById("certificateTemplate");
+  certDiv.classList.remove("hidden");
+
+  html2canvas(certDiv).then(canvas => {
+    const pdf = new jspdf.jsPDF('l', 'pt', 'a4');
+    const img = canvas.toDataURL("image/png");
+    const width = pdf.internal.pageSize.getWidth();
+    const height = (canvas.height * width) / canvas.width;
+    pdf.addImage(img, 'PNG', 10, 10, width - 20, height);
+    pdf.save(`sertifikat_${selectedNama.replace(/\s+/g, "_")}.pdf`);
+    certDiv.classList.add("hidden");
+    closeCertModal();
+  });
+}
