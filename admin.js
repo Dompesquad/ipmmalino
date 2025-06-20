@@ -1,4 +1,4 @@
-// Konfigurasi Firebase
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAIW_ugkzambp908lz5hc5OthXvXrdVg4s",
   authDomain: "ipm-kader-database.firebaseapp.com",
@@ -11,13 +11,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// UI Elements
+// Elemen
 const loginBox = document.getElementById("loginBox");
 const adminContent = document.getElementById("adminContent");
 const loginError = document.getElementById("loginError");
 const dataBody = document.getElementById("dataBody");
 
-// Login Admin
+// Login
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -30,7 +30,7 @@ function login() {
   }
 }
 
-// Ambil dan tampilkan data kader
+// Load data
 function loadData() {
   dataBody.innerHTML = "";
   db.ref("data_kader").on("value", snapshot => {
@@ -51,14 +51,13 @@ function loadData() {
         <td class="border px-2 py-1">
           <button onclick="editRow('${key}')" class="text-blue-600">Edit</button> |
           <button onclick="deleteRow('${key}')" class="text-red-600">Hapus</button>
-        </td>
-      `;
+        </td>`;
       dataBody.appendChild(row);
     });
   });
 }
 
-// Edit data kader
+// Edit
 function editRow(key) {
   db.ref("data_kader/" + key).once("value").then(snapshot => {
     const d = snapshot.val();
@@ -77,7 +76,7 @@ function editRow(key) {
   });
 }
 
-// Hapus data kader
+// Hapus
 function deleteRow(key) {
   if (confirm("Yakin ingin menghapus data ini?")) {
     db.ref("data_kader/" + key).remove();
@@ -104,13 +103,12 @@ function exportToPDF() {
   });
 }
 
-// Backup ke JSON
+// Backup JSON
 function backupToJSON() {
   db.ref("data_kader").once("value").then(snapshot => {
     const data = snapshot.val();
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    
     const a = document.createElement("a");
     a.href = url;
     a.download = "data_kader_ipm.json";
@@ -119,4 +117,24 @@ function backupToJSON() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   });
+}
+
+// Pencarian
+const searchInput = document.getElementById("searchInput");
+searchInput?.addEventListener("input", () => {
+  const keyword = searchInput.value.toLowerCase();
+  const rows = dataBody.getElementsByTagName("tr");
+  Array.from(rows).forEach(row => {
+    const nama = row.cells[0]?.textContent.toLowerCase();
+    const angkatan = row.cells[1]?.textContent.toLowerCase();
+    const pktm1 = row.cells[2]?.textContent.toLowerCase();
+    const match = nama.includes(keyword) || angkatan.includes(keyword) || pktm1.includes(keyword);
+    row.style.display = match ? "" : "none";
+  });
+});
+
+function resetSearch() {
+  searchInput.value = "";
+  const rows = dataBody.getElementsByTagName("tr");
+  Array.from(rows).forEach(row => row.style.display = "");
 }
