@@ -3,51 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hasil Evaluasi Kegiatan</title>
+  <title>Evaluasi Kegiatan IPM</title>
 
-  <!-- Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
-
-  <!-- Ekspor -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body class="bg-yellow-50 min-h-screen flex items-center justify-center p-6">
+<body class="bg-yellow-50 min-h-screen p-4">
 
-  <div class="bg-white rounded-xl shadow-xl w-full max-w-5xl p-6">
-    <div class="mb-4 flex justify-between items-center">
+  <!-- Login Admin -->
+  <div id="loginBox" class="hidden max-w-md mx-auto text-center bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold text-yellow-700 mb-4">Login Admin</h2>
+    <input id="username" type="text" placeholder="Username" class="border p-2 w-full mb-2 rounded" />
+    <input id="password" type="password" placeholder="Password" class="border p-2 w-full mb-4 rounded" />
+    <button onclick="login()" class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Login</button>
+    <p id="loginError" class="text-red-600 mt-2 hidden">❌ Username atau password salah!</p>
+  </div>
+
+  <!-- Admin Content -->
+  <div id="adminContent" class="hidden bg-white rounded-xl p-6 shadow max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-4">
       <h1 class="text-2xl font-bold text-yellow-700">📊 Hasil Evaluasi Kegiatan</h1>
       <a href="admin.html" class="text-blue-600 underline text-sm">← Kembali ke Admin Utama</a>
     </div>
 
-    <!-- Tabel -->
-    <div class="overflow-auto">
-      <table id="evalTable" class="table-auto w-full border text-sm">
-        <thead class="bg-yellow-100" id="evalHeader">
-          <!-- Kolom header akan diisi oleh JS -->
+    <div class="overflow-x-auto">
+      <table id="evaluasiTable" class="w-full table-auto border text-sm">
+        <thead class="bg-yellow-100">
+          <tr>
+            <th class="border px-2 py-1">Nama</th>
+            <th class="border px-2 py-1">Kegiatan</th>
+            <th class="border px-2 py-1">M1</th>
+            <th class="border px-2 py-1">M2</th>
+            <th class="border px-2 py-1">M3</th>
+            <th class="border px-2 py-1">M4</th>
+            <th class="border px-2 py-1">M5</th>
+            <th class="border px-2 py-1">M6</th>
+            <th class="border px-2 py-1">M7</th>
+            <th class="border px-2 py-1">M8</th>
+            <th class="border px-2 py-1">M9</th>
+            <th class="border px-2 py-1">M10</th>
+            <th class="border px-2 py-1">M11</th>
+            <th class="border px-2 py-1">M12</th>
+            <th class="border px-2 py-1">M13</th>
+            <th class="border px-2 py-1">Fasilitator</th>
+            <th class="border px-2 py-1">Panitia</th>
+          </tr>
         </thead>
-        <tbody id="evalBody"></tbody>
+        <tbody id="dataBody"></tbody>
       </table>
     </div>
 
-    <!-- Tombol -->
-    <div class="flex gap-2 mt-4 justify-center flex-wrap">
-      <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">📄 Export Excel</button>
-      <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">📄 Export PDF</button>
+    <div class="flex gap-2 mt-4 justify-end no-print">
+      <button onclick="exportToExcel()" class="bg-green-600 text-white font-bold px-4 py-2 rounded">📄 Export Excel</button>
+      <button onclick="exportToPDF()" class="bg-red-600 text-white font-bold px-4 py-2 rounded">📄 Export PDF</button>
     </div>
-
-    <!-- Footer -->
-    <footer class="text-center text-gray-600 text-sm mt-6">
-      © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
-    </footer>
   </div>
 
-  <!-- Firebase -->
+  <!-- Form Evaluasi untuk Peserta -->
+  <div id="formContent" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold text-yellow-700 mb-4">📝 Form Evaluasi Kegiatan</h2>
+    <form id="formEvaluasi" class="space-y-3">
+      <input type="text" name="nama" placeholder="Nama Lengkap" required class="border rounded px-4 py-2 w-full"/>
+      <input type="text" name="kegiatan" placeholder="Nama Kegiatan" required class="border rounded px-4 py-2 w-full"/>
+      <div class="grid grid-cols-2 gap-2">
+        ${[...Array(13)].map((_, i) => `
+          <input type="number" name="m${i + 1}" placeholder="Nilai Materi ${i + 1}" required min="1" max="10" class="border rounded px-4 py-2 w-full"/>
+        `).join("")}
+      </div>
+      <input type="number" name="fasilitator" placeholder="Nilai Fasilitator (1-10)" required class="border rounded px-4 py-2 w-full"/>
+      <input type="number" name="panitia" placeholder="Nilai Panitia (1-10)" required class="border rounded px-4 py-2 w-full"/>
+      <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded w-full">Kirim Evaluasi</button>
+    </form>
+    <p id="successMsg" class="text-green-600 text-center mt-4 hidden">✅ Evaluasi berhasil dikirim!</p>
+  </div>
+
+  <footer class="text-center text-gray-600 text-sm mt-8">
+    © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
+  </footer>
+
+  <!-- Firebase & Tools -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
-  <!-- Custom Script -->
-  <script src="evaluasi.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="evaluasi.js?v=1"></script>
 </body>
 </html>
