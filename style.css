@@ -1,27 +1,119 @@
-/* Background utama kuning muda */
+/* ====== Global Style ====== */
 body {
-  background-color: #fffbe6; /* kuning pucat */
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Helvetica', sans-serif;
+  background-color: #fefce8; /* yellow-50 */
+  color: #1f2937; /* gray-800 */
 }
 
-/* Box form */
-form {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 2rem;
+/* ====== Table Style ====== */
+table {
+  border-collapse: collapse;
+  width: 100%;
 }
 
-/* Judul form */
-h1 {
-  color: #d4a900; /* kuning emas IPM */
+th, td {
+  border: 1px solid #e5e7eb; /* gray-200 */
+  padding: 8px;
+  text-align: center;
 }
 
-/* Tombol Kirim */
-button[type="submit"] {
-  background-color: #d4a900; /* kuning IPM */
-  transition: background-color 0.3s ease;
+th {
+  background-color: #fef3c7; /* yellow-100 */
+  font-weight: bold;
 }
 
-button[type="submit"]:hover {
-  background-color: #b58c00;
+/* ====== Input & Button Style ====== */
+input::placeholder {
+  color: #9ca3af; /* gray-400 */
+}
+
+input, select, textarea {
+  outline: none;
+  transition: border 0.2s;
+}
+
+input:focus, textarea:focus {
+  border-color: #facc15; /* yellow-400 */
+}
+
+/* Tombol Aksi */
+button {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* Link Button */
+a {
+  text-decoration: none;
+}
+
+/* Tombol Cetak dan Export */
+.print-btn, .export-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+}
+
+.print-btn {
+  background-color: #facc15;
+}
+
+.export-btn {
+  background-color: #059669;
+}
+
+/* Login Box Style */
+#loginBox input {
+  border: 1px solid #d1d5db; /* gray-300 */
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+/* Admin Header */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Search Bar */
+#searchInput {
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  border-radius: 6px;
+  width: 100%;
+}
+
+/* ====== Print Style ====== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th {
+    background-color: #eee !important;
+  }
+
+  td, th {
+    border: 1px solid #aaa;
+    padding: 6px;
+  }
+
+  button, input, select, a {
+    display: none !important;
+  }
 }
