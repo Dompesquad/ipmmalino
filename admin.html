@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin IPM</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -13,7 +15,7 @@
 
   <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow">
 
-    <!-- Login -->
+    <!-- Login Box -->
     <div id="loginBox" class="text-center">
       <h2 class="text-xl font-bold mb-4 text-yellow-700">Login Admin IPM</h2>
       <input id="username" type="text" placeholder="Username" class="border p-2 rounded w-full mb-2">
@@ -24,22 +26,24 @@
 
     <!-- Admin Content -->
     <div id="adminContent" class="hidden">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold text-yellow-700">Data Kader IPM</h1>
-        <div class="space-x-2">
-          <a href="statistik.html" target="_blank" class="bg-blue-500 text-white px-4 py-2 rounded">📊 Statistik</a>
-          <a href="admin-pendaftaran.html" target="_blank" class="bg-purple-600 text-white px-4 py-2 rounded">📝 Pendaftaran</a>
+      <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+        <h1 class="text-2xl font-bold text-yellow-700">📋 Data Kader IPM</h1>
+        <div class="flex gap-2 flex-wrap">
+          <a href="statistik.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">📊 Statistik</a>
+          <a href="admin-pendaftaran.html" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">📝 Pendaftaran</a>
+          <button onclick="backupJSON()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">🔁 Backup JSON</button>
+          <button onclick="printData()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded">🖨️ Cetak</button>
         </div>
       </div>
 
-      <!-- Search Bar -->
+      <!-- Search -->
       <div class="mb-4">
-        <input id="searchInput" oninput="searchData()" placeholder="Cari Nama, Angkatan, atau PKTM 1..." class="border border-gray-300 px-4 py-2 rounded w-full" />
+        <input id="searchInput" oninput="searchData()" placeholder="🔍 Cari Nama, Angkatan, atau PKTM 1..." class="border border-gray-300 px-4 py-2 rounded w-full" />
       </div>
 
-      <!-- Data Table -->
+      <!-- Table -->
       <div class="overflow-x-auto mb-4">
-        <table id="dataTable" class="table-auto w-full border text-sm">
+        <table id="dataTable" class="table-auto w-full border text-sm print:text-xs">
           <thead class="bg-yellow-100 text-center">
             <tr>
               <th class="border px-2 py-1">Nama</th>
@@ -50,24 +54,21 @@
               <th class="border px-2 py-1">Jabatan</th>
               <th class="border px-2 py-1">WA</th>
               <th class="border px-2 py-1">Alamat</th>
-              <th class="border px-2 py-1">Aksi</th>
+              <th class="border px-2 py-1 no-print">Aksi</th>
             </tr>
           </thead>
           <tbody id="dataBody"></tbody>
         </table>
       </div>
 
-      <!-- Buttons -->
-      <div class="flex justify-end gap-2">
+      <!-- Export Buttons -->
+      <div class="flex justify-end gap-2 print:hidden">
         <button onclick="exportToExcel()" class="bg-green-600 text-white px-4 py-2 rounded">📄 Excel</button>
         <button onclick="exportToPDF()" class="bg-red-600 text-white px-4 py-2 rounded">📄 PDF</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase & JS -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>
