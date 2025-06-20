@@ -65,16 +65,60 @@
       <input type="text" name="nama" placeholder="Nama Lengkap" required class="border rounded px-4 py-2 w-full"/>
       <input type="text" name="kegiatan" placeholder="Nama Kegiatan" required class="border rounded px-4 py-2 w-full"/>
       <div class="grid grid-cols-2 gap-2">
-        ${[...Array(13)].map((_, i) => `
-          <input type="number" name="m${i + 1}" placeholder="Nilai Materi ${i + 1}" required min="1" max="10" class="border rounded px-4 py-2 w-full"/>
-        `).join("")}
-      </div>
-      <input type="number" name="fasilitator" placeholder="Nilai Fasilitator (1-10)" required class="border rounded px-4 py-2 w-full"/>
-      <input type="number" name="panitia" placeholder="Nilai Panitia (1-10)" required class="border rounded px-4 py-2 w-full"/>
-      <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded w-full">Kirim Evaluasi</button>
-    </form>
-    <p id="successMsg" class="text-green-600 text-center mt-4 hidden">✅ Evaluasi berhasil dikirim!</p>
-  </div>
+  <select name="m1" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 1: Ke-IPM-an</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m2" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 2: Kepemimpinan</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m3" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 3: Keorganisasian</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m4" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 4</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m5" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 5</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m6" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 6</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m7" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 7</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m8" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 8</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m9" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 9</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m10" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 10</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m11" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 11</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m12" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 12</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+  <select name="m13" required class="border rounded px-4 py-2 w-full">
+    <option value="">Materi 13</option>
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+  </select>
+</div>
+
 
   <footer class="text-center text-gray-600 text-sm mt-8">
     © 2025 <span class="font-semibold text-yellow-700">Ruang Pena</span>. All rights reserved.
