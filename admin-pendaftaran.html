@@ -78,5 +78,51 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="admin-pendaftaran.js"></script>
 
+  <!-- Modal Input Sertifikat -->
+<div id="certModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white p-6 rounded-lg w-full max-w-lg">
+    <h3 class="text-xl font-bold mb-4 text-yellow-700">Buat Sertifikat</h3>
+    <input type="text" id="certNamaPeserta" readonly class="mb-2 w-full p-2 border rounded bg-gray-100" />
+    <input type="text" id="certKegiatan" readonly class="mb-2 w-full p-2 border rounded bg-gray-100" />
+    <input type="text" id="certMot" placeholder="Master of Training" class="mb-2 w-full p-2 border rounded" />
+    <input type="text" id="certKetum" placeholder="Ketua Umum Cabang" class="mb-2 w-full p-2 border rounded" />
+    <input type="text" id="certSekum" placeholder="Sekretaris Cabang" class="mb-2 w-full p-2 border rounded" />
+    <input type="text" id="certTtd" placeholder="Yang Bertanda Tangan" class="mb-4 w-full p-2 border rounded" />
+    <div class="flex justify-between">
+      <button onclick="closeCertModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+      <button onclick="generateCertificate()" class="bg-yellow-600 text-white px-4 py-2 rounded">🎓 Buat & Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- Template Sertifikat -->
+<div id="certificateTemplate" class="hidden p-10 text-center border border-yellow-700 mt-6 bg-white w-[800px] mx-auto">
+  <h2 class="text-3xl font-bold mb-2 text-yellow-700">SERTIFIKAT</h2>
+  <p class="text-sm mb-4 text-gray-700">Diberikan kepada:</p>
+  <h3 id="certPreviewNama" class="text-2xl font-bold text-black"></h3>
+  <p class="my-2 text-gray-700">Atas partisipasinya dalam kegiatan</p>
+  <h4 class="text-lg font-semibold text-black" id="certPreviewKegiatan"></h4>
+  <p class="my-2 text-gray-700">Diselenggarakan oleh IPM Cabang Malino</p>
+
+  <div class="grid grid-cols-2 gap-4 text-sm text-left mt-6">
+    <div>
+      <p>Master of Training:</p>
+      <p id="certPreviewMot" class="font-bold"></p>
+    </div>
+    <div>
+      <p>Ketua Umum Cabang:</p>
+      <p id="certPreviewKetum" class="font-bold"></p>
+    </div>
+    <div>
+      <p>Sekretaris Cabang:</p>
+      <p id="certPreviewSekum" class="font-bold"></p>
+    </div>
+    <div>
+      <p>Yang Bertanda Tangan:</p>
+      <p id="certPreviewTtd" class="font-bold"></p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
