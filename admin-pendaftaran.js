@@ -36,17 +36,19 @@ function loadData() {
       const d = child.val();
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td class="border px-2 py-1">${d.nama}</td>
-        <td class="border px-2 py-1">${d.ttl}</td>
-        <td class="border px-2 py-1">${d.asal_sekolah}</td>
-        <td class="border px-2 py-1">${d.acara}</td>
-        <td class="border px-2 py-1">${d.tujuan}</td>
-        <td class="border px-2 py-1">${d.nama_ortu}</td>
-        <td class="border px-2 py-1">${d.hp}</td>
-        <td class="border px-2 py-1 text-center">
-          <button onclick="openCertificateModal('${d.nama}', '${d.acara}')" class="bg-yellow-600 text-white px-2 py-1 rounded text-xs">🎓 Sertifikat</button>
-        </td>
-      `;
+  <td class="border px-2 py-1">${d.nama}</td>
+  <td class="border px-2 py-1">${d.ttl}</td>
+  <td class="border px-2 py-1">${d.asal_sekolah}</td>
+  <td class="border px-2 py-1">${d.acara}</td>
+  <td class="border px-2 py-1">${d.tujuan}</td>
+  <td class="border px-2 py-1">${d.nama_ortu}</td>
+  <td class="border px-2 py-1">${d.hp}</td>
+  <td class="border px-2 py-1 no-print">
+    <a href="sertifikat.html?nama=${encodeURIComponent(d.nama)}&acara=${encodeURIComponent(d.acara)}&ttl=${encodeURIComponent(d.ttl)}" target="_blank"
+      class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-xs">🪪 Sertifikat</a>
+  </td>
+`;
+
       dataBody.appendChild(row);
     });
   });
