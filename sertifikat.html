@@ -2,84 +2,54 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sertifikat Peserta</title>
-  <script>
-    // Ambil data dari URL
-    function getParam(n) {
-      return new URLSearchParams(window.location.search).get(n) || "";
-    }
-
-    window.onload = () => {
-      document.getElementById("namaPeserta").textContent = getParam("nama");
-      document.getElementById("acara").textContent = getParam("acara");
-      document.getElementById("ttl").textContent = getParam("ttl");
-    }
-
-    function cetakPDF() {
-      window.print();
-    }
-  </script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #fdfdf0;
-    }
     .sertifikat {
-      border: 4px double #000;
-      padding: 40px;
-      max-width: 800px;
-      margin: auto;
-      text-align: center;
+      background-image: url('sertifikat-bg.jpg'); /* Ganti jika nama file berbeda */
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      min-height: 700px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      padding: 60px;
+      margin: 40px auto;
+      max-width: 1000px;
+      border: 10px solid #fcd34d;
+      border-radius: 12px;
+      background-color: white;
     }
-    .judul {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: darkgreen;
-    }
-    .isi {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-    .ttd {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 40px;
-    }
-    .ttd div {
-      width: 45%;
-      text-align: center;
-    }
-    @media print {
-      button { display: none; }
+    .text-outline {
+      text-shadow: 1px 1px 2px #00000040;
     }
   </style>
 </head>
-<body>
-  <div class="sertifikat">
-    <div class="judul">SERTIFIKAT PESERTA</div>
-    <div class="isi">Diberikan kepada:</div>
-    <div class="isi" style="font-size: 22px; font-weight: bold;" id="namaPeserta">...</div>
-    <div class="isi">Tempat/Tanggal Lahir: <span id="ttl">...</span></div>
-    <div class="isi">Atas partisipasinya dalam kegiatan <span id="acara">...</span></div>
-    <div class="isi">Yang diselenggarakan oleh Ikatan Pelajar Muhammadiyah</div>
-    <div class="isi">Pada tanggal ................................ sampai ................................</div>
-    <div class="isi">Bertempat di ....................................................</div>
+<body class="bg-yellow-50">
 
-    <div class="ttd">
+  <div class="sertifikat text-center">
+    <h1 class="text-3xl font-extrabold text-yellow-700 uppercase mb-2 text-outline">SERTIFIKAT PESERTA</h1>
+    <p class="text-lg mb-4">Diberikan kepada:</p>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">[NAMA PESERTA]</h2>
+    <p class="text-lg">Atas partisipasinya dalam kegiatan</p>
+    <p class="italic text-xl font-semibold mb-2 text-yellow-700">Pengkaderan Kader Dasar Taruna Melati 1</p>
+    <p class="text-lg mb-2">Yang diselenggarakan pada tanggal <span class="font-medium">[Tanggal Mulai – Tanggal Selesai]</span></p>
+    <p class="text-lg mb-6">Bertempat di <span class="font-medium">[Tempat Kegiatan]</span></p>
+
+    <!-- Tanda tangan -->
+    <div class="grid grid-cols-2 gap-8 mt-12 text-center">
       <div>
-        <p>Master of Training</p><br><br>
-        <p>______________________</p>
+        <p class="mb-16">Malino, [Tanggal Cetak]</p>
+        <p class="font-bold underline">[NAMA MASTER OF TRAINING]</p>
+        <p class="text-sm italic">Master of Training</p>
       </div>
       <div>
-        <p>Ketua Umum PC IPM Malino</p><br><br>
-        <p>______________________</p>
+        <p class="mb-16">Mengetahui,</p>
+        <p class="font-bold underline">[NAMA KETUA UMUM]</p>
+        <p class="text-sm italic">Ketua Umum IPM Cabang Malino</p>
       </div>
     </div>
   </div>
-  <div style="text-align:center; margin-top:20px;">
-    <button onclick="cetakPDF()" style="padding:10px 20px; font-weight:bold; background:green; color:white;">🖨️ Cetak Sertifikat</button>
-  </div>
+
 </body>
 </html>
