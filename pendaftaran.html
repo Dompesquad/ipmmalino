@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pendaftaran Kegiatan IPM</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-yellow-50 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-xl">
+    <h1 class="text-2xl font-bold text-yellow-700 text-center mb-4">📝 Form Pendaftaran Kegiatan IPM</h1>
+
+    <form id="daftarForm" class="space-y-4">
+      <input name="nama" required type="text" placeholder="Nama Lengkap" class="w-full border rounded px-4 py-2" />
+      
+      <input name="ttl" required type="text" placeholder="Tempat, Tanggal Lahir" class="w-full border rounded px-4 py-2" />
+      
+      <input name="asal_sekolah" required type="text" placeholder="Asal Sekolah" class="w-full border rounded px-4 py-2" />
+      
+      <select name="acara" required class="w-full border rounded px-4 py-2">
+        <option value="">-- Pilih Kegiatan --</option>
+        <option>PKTM 1</option>
+        <option>PKTM 2</option>
+        <option>Tingkat Lanjutan</option>
+        <option>Seminar</option>
+        <option>Kajian IPM</option>
+      </select>
+
+      <textarea name="tujuan" required placeholder="Tujuan Mengikuti Kegiatan" rows="3" class="w-full border rounded px-4 py-2"></textarea>
+
+      <input name="nama_ortu" required type="text" placeholder="Nama Orang Tua / Wali" class="w-full border rounded px-4 py-2" />
+      
+      <input name="hp" required type="text" placeholder="No. HP / WA" class="w-full border rounded px-4 py-2" />
+      
+      <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded w-full font-bold">Daftar</button>
+    </form>
+
+    <p id="msg" class="text-green-600 text-center mt-4 hidden">✅ Pendaftaran berhasil dikirim!</p>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script src="pendaftaran.js"></script>
+</body>
+</html>
